@@ -4,587 +4,349 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DramlarUz</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #FFD700;
-    --gold2: #FFC200;
-    --dark: #0d0d1a;
-    --dark2: #161628;
-    --card: #1e1e36;
-    --accent: #a259ff;
-    --accent2: #7c3aed;
-    --text: #f0f0ff;
-    --sub: #9999bb;
-    --red: #ff4d6d;
-    --green: #00e676;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--dark);
-    color: var(--text);
-    font-family: 'Nunito', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* Stars background */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: 
-      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
-      radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.2) 0%, transparent 100%),
-      radial-gradient(1px 1px at 60% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.5) 0%, transparent 100%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* NAV */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(13,13,26,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(162,89,255,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 20px;
-  }
-
-  .logo {
-    font-size: 22px;
-    font-weight: 900;
-    background: linear-gradient(90deg, var(--gold), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 1px;
-  }
-
-  .lang-switcher {
-    display: flex;
-    gap: 6px;
-  }
-
-  .lang-btn {
-    background: var(--card);
-    border: 1px solid rgba(162,89,255,0.3);
-    color: var(--sub);
-    font-family: 'Nunito', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    padding: 5px 10px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .lang-btn.active, .lang-btn:hover {
-    background: var(--accent2);
-    color: white;
-    border-color: var(--accent);
-  }
-
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(13,13,26,0.95);
-    backdrop-filter: blur(12px);
-    border-top: 1px solid rgba(162,89,255,0.2);
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0 16px;
-  }
-
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    cursor: pointer;
-    opacity: 0.5;
-    transition: all 0.2s;
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--sub);
-    background: none;
-    border: none;
-    padding: 0 16px;
-  }
-
-  .nav-item.active {
-    opacity: 1;
-    color: var(--gold);
-  }
-
-  .nav-item .icon {
-    font-size: 22px;
-  }
-
-  /* PAGES */
-  .page { display: none; padding: 16px 16px 90px; }
-  .page.active { display: block; }
-
-  /* HOME PAGE */
-  .hero {
-    text-align: center;
-    padding: 30px 0 20px;
-  }
-
-  .hero h1 {
-    font-size: 32px;
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--gold), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
-  }
-
-  .hero p {
-    color: var(--sub);
-    font-size: 14px;
-  }
-
-  /* DRAMA CARDS */
-  .drama-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-top: 20px;
-  }
-
-  .drama-card {
-    background: var(--card);
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid rgba(162,89,255,0.15);
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    position: relative;
-  }
-
-  .drama-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(162,89,255,0.2); }
-
-  .drama-thumb {
-    width: 100%;
-    height: 130px;
-    object-fit: cover;
-    background: linear-gradient(135deg, #2a1a4e, #1a1a3e);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 48px;
-  }
-
-  .drama-info {
-    padding: 10px;
-  }
-
-  .drama-title {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    line-height: 1.3;
-  }
-
-  .drama-meta {
-    font-size: 11px;
-    color: var(--sub);
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .drama-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: var(--red);
-    color: white;
-    font-size: 9px;
-    font-weight: 800;
-    padding: 2px 6px;
-    border-radius: 8px;
-  }
-
-  .drama-badge.new { background: var(--green); color: #000; }
-
-  /* COIN PAGE */
-  .coin-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-  }
-
-  .coin-balance {
-    background: var(--card);
-    border: 1px solid rgba(255,215,0,0.3);
-    border-radius: 20px;
-    padding: 16px 30px;
-    text-align: center;
-    margin-bottom: 30px;
-    width: 100%;
-  }
-
-  .coin-balance .label {
-    font-size: 13px;
-    color: var(--sub);
-    margin-bottom: 4px;
-  }
-
-  .coin-balance .amount {
-    font-size: 36px;
-    font-weight: 900;
-    color: var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  /* THE COIN */
-  .coin-wrap {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin-bottom: 20px;
-  }
-
-  .coin {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, #ffe066, #e6a800, #7a5500);
-    box-shadow: 
-      0 0 0 6px #b8860b,
-      0 0 40px rgba(255,215,0,0.5),
-      0 10px 30px rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.08s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .coin::before {
-    content: '';
-    position: absolute;
-    top: 15%;
-    left: 20%;
-    width: 30%;
-    height: 20%;
-    background: rgba(255,255,255,0.3);
-    border-radius: 50%;
-    transform: rotate(-30deg);
-  }
-
-  .coin:active { transform: scale(0.93); }
-
-  .coin-inner {
-    font-size: 70px;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .coin-rings {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
-  .ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid rgba(255,215,0,0.4);
-    animation: ring-pulse 2s ease-out infinite;
-    opacity: 0;
-  }
-
-  .ring:nth-child(2) { animation-delay: 0.5s; }
-  .ring:nth-child(3) { animation-delay: 1s; }
-
-  @keyframes ring-pulse {
-    0% { transform: scale(1); opacity: 0.6; }
-    100% { transform: scale(1.5); opacity: 0; }
-  }
-
-  /* Tap floating text */
-  .tap-float {
-    position: absolute;
-    font-weight: 900;
-    font-size: 20px;
-    color: var(--gold);
-    pointer-events: none;
-    animation: float-up 0.8s ease-out forwards;
-    text-shadow: 0 0 10px rgba(255,215,0,0.8);
-  }
-
-  @keyframes float-up {
-    0% { opacity: 1; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
-  }
-
-  /* Progress bar */
-  .energy-bar-wrap {
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 16px;
-  }
-
-  .energy-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--sub);
-    margin-bottom: 6px;
-  }
-
-  .energy-bar {
-    height: 10px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .energy-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--gold2), var(--gold));
-    border-radius: 10px;
-    transition: width 0.3s;
-  }
-
-  .refill-text {
-    text-align: center;
-    font-size: 12px;
-    color: var(--sub);
-    margin-top: 6px;
-  }
-
-  .refill-text span {
-    color: var(--gold);
-    font-weight: 700;
-  }
-
-  /* BOOSTS */
-  .boosts-section {
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  .boosts-section h3 {
-    font-size: 14px;
-    color: var(--sub);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-
-  .boost-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  .boost-card {
-    background: var(--card);
-    border: 1px solid rgba(162,89,255,0.2);
-    border-radius: 14px;
-    padding: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .boost-card:hover {
-    border-color: var(--accent);
-    box-shadow: 0 4px 20px rgba(162,89,255,0.15);
-  }
-
-  .boost-icon { font-size: 28px; }
-
-  .boost-info .name {
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  .boost-info .cost {
-    font-size: 12px;
-    color: var(--gold);
-    display: flex;
-    align-items: center;
-    gap: 3px;
-  }
-
-  /* PROFILE PAGE */
-  .profile-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-    gap: 12px;
-  }
-
-  .avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 36px;
-    border: 3px solid var(--gold);
-    box-shadow: 0 0 20px rgba(255,215,0,0.3);
-  }
-
-  .profile-name {
-    font-size: 20px;
-    font-weight: 900;
-  }
-
-  .profile-coins {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 16px;
-    color: var(--gold);
-    font-weight: 700;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-top: 8px;
-    width: 100%;
-  }
-
-  .stat-card {
-    background: var(--card);
-    border-radius: 14px;
-    padding: 14px 8px;
-    text-align: center;
-    border: 1px solid rgba(162,89,255,0.15);
-  }
-
-  .stat-card .val {
-    font-size: 22px;
-    font-weight: 900;
-    color: var(--gold);
-  }
-
-  .stat-card .lbl {
-    font-size: 10px;
-    color: var(--sub);
-    margin-top: 3px;
-  }
-
-  .profile-section {
-    width: 100%;
-    margin-top: 20px;
-  }
-
-  .profile-section h3 {
-    font-size: 13px;
-    color: var(--sub);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-  }
-
-  .profile-row {
-    background: var(--card);
-    border-radius: 14px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-    border: 1px solid rgba(162,89,255,0.1);
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .profile-row:hover { background: #252545; }
-
-  .profile-row .left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 14px;
-    font-weight: 600;
-  }
-
-  .profile-row .icon { font-size: 18px; }
-  .profile-row .arrow { color: var(--sub); font-size: 18px; }
-
-  /* Section title */
-  .section-title {
-    font-size: 16px;
-    font-weight: 800;
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: rgba(162,89,255,0.2);
-  }
-
-  /* Toast */
-  .toast {
-    position: fixed;
-    top: 70px;
-    left: 50%;
-    transform: translateX(-50%) translateY(-20px);
-    background: rgba(30,30,54,0.95);
-    border: 1px solid var(--accent);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-size: 13px;
-    font-weight: 700;
-    z-index: 999;
-    opacity: 0;
-    transition: all 0.3s;
-    pointer-events: none;
-    white-space: nowrap;
-  }
-
-  .toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
+:root {
+  --gold: #FFD700;
+  --gold2: #FFC200;
+  --gold3: #ffb300;
+  --gold-light: #fff3b0;
+  --dark: #09090f;
+  --dark2: #111120;
+  --card: #16162a;
+  --card2: #1c1c35;
+  --accent: #a259ff;
+  --accent2: #7c3aed;
+  --text: #f0f0ff;
+  --sub: #8888aa;
+  --red: #ff4d6d;
+  --green: #00e676;
+  --border: rgba(255,215,0,0.15);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dark);color:var(--text);font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* starfield */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(1px 1px at 5% 8%, rgba(255,255,255,0.6) 0%,transparent 100%),
+    radial-gradient(1px 1px at 15% 45%, rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 25% 80%, rgba(255,255,255,0.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 40% 20%, rgba(255,255,255,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 55% 65%, rgba(255,215,0,0.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.4) 0%,transparent 100%),
+    radial-gradient(1px 1px at 82% 75%, rgba(255,255,255,0.3) 0%,transparent 100%),
+    radial-gradient(1px 1px at 92% 12%, rgba(255,215,0,0.5) 0%,transparent 100%),
+    radial-gradient(1px 1px at 60% 90%, rgba(255,255,255,0.2) 0%,transparent 100%),
+    radial-gradient(1px 1px at 35% 55%, rgba(255,255,255,0.35) 0%,transparent 100%);
+  pointer-events:none;z-index:0;
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(9,9,15,0.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,215,0,0.12);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 18px;
+}
+.logo{
+  font-family:'Cinzel',serif;font-size:20px;font-weight:900;
+  background:linear-gradient(90deg,#FFD700,#fff3b0,#FFD700);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  letter-spacing:2px;
+}
+.lang-switcher{display:flex;gap:5px;}
+.lang-btn{
+  background:var(--card);border:1px solid rgba(255,215,0,0.2);
+  color:var(--sub);font-family:'Nunito',sans-serif;
+  font-size:11px;font-weight:800;padding:4px 9px;
+  border-radius:20px;cursor:pointer;transition:all 0.2s;
+}
+.lang-btn.active,.lang-btn:hover{background:rgba(255,215,0,0.15);color:var(--gold);border-color:var(--gold);}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(9,9,15,0.97);
+  backdrop-filter:blur(16px);
+  border-top:1px solid rgba(255,215,0,0.12);
+  display:flex;justify-content:space-around;
+  padding:8px 0 14px;
+}
+.nav-item{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  cursor:pointer;opacity:0.45;transition:all 0.25s;
+  font-size:10px;font-weight:800;color:var(--sub);
+  background:none;border:none;padding:0 18px;letter-spacing:0.5px;
+}
+.nav-item.active{opacity:1;color:var(--gold);}
+.nav-item .icon{font-size:20px;}
+
+/* PAGES */
+.page{display:none;padding:14px 14px 88px;}
+.page.active{display:block;}
+
+/* ═══════════════ ORNATE COIN ═══════════════ */
+.coin-page{display:flex;flex-direction:column;align-items:center;padding-top:16px;}
+
+.coin-balance{
+  background:linear-gradient(135deg,rgba(255,215,0,0.08),rgba(255,180,0,0.04));
+  border:1px solid rgba(255,215,0,0.25);
+  border-radius:20px;padding:14px 28px;
+  text-align:center;margin-bottom:24px;width:100%;
+  box-shadow:0 0 30px rgba(255,215,0,0.05);
+}
+.coin-balance .label{font-size:12px;color:var(--sub);margin-bottom:4px;letter-spacing:1px;text-transform:uppercase;}
+.coin-balance .amount{
+  font-size:34px;font-weight:900;color:var(--gold);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Cinzel',serif;
+}
+
+/* COIN WRAPPER */
+.coin-wrap{
+  position:relative;width:220px;height:220px;
+  margin-bottom:22px;cursor:pointer;
+  filter:drop-shadow(0 0 30px rgba(255,200,0,0.4));
+}
+
+/* SVG coin layers */
+.coin-svg{width:220px;height:220px;display:block;}
+
+/* Pulsing rings */
+.coin-ring-anim{
+  position:absolute;inset:-10px;border-radius:50%;pointer-events:none;
+}
+.cring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1.5px solid rgba(255,215,0,0.35);
+  animation:cring-out 2.4s ease-out infinite;opacity:0;
+}
+.cring:nth-child(2){animation-delay:0.8s;}
+.cring:nth-child(3){animation-delay:1.6s;}
+@keyframes cring-out{
+  0%{transform:scale(1);opacity:0.7;}
+  100%{transform:scale(1.6);opacity:0;}
+}
+
+/* tap float */
+.tap-float{
+  position:absolute;font-weight:900;font-size:22px;
+  color:var(--gold);pointer-events:none;
+  animation:float-up 0.9s ease-out forwards;
+  text-shadow:0 0 12px rgba(255,215,0,0.9);
+  font-family:'Cinzel',serif;z-index:10;
+}
+@keyframes float-up{
+  0%{opacity:1;transform:translateY(0) scale(1);}
+  100%{opacity:0;transform:translateY(-90px) scale(1.4);}
+}
+
+/* coin press */
+.coin-wrap:active{transform:scale(0.94);}
+.coin-wrap{transition:transform 0.08s;}
+
+/* ENERGY */
+.energy-bar-wrap{width:100%;max-width:320px;margin-bottom:18px;}
+.energy-label{display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-bottom:7px;letter-spacing:0.5px;}
+.energy-bar{
+  height:11px;background:rgba(255,255,255,0.06);
+  border-radius:10px;overflow:hidden;
+  border:1px solid rgba(255,215,0,0.12);
+}
+.energy-fill{
+  height:100%;
+  background:linear-gradient(90deg,#b8860b,#ffd700,#fff3b0,#ffd700);
+  background-size:200% 100%;
+  animation:gold-flow 2s linear infinite;
+  border-radius:10px;transition:width 0.3s;
+}
+@keyframes gold-flow{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.refill-text{text-align:center;font-size:11px;color:var(--sub);margin-top:6px;}
+.refill-text span{color:var(--gold);font-weight:700;}
+
+/* BOOSTS */
+.boosts-section{width:100%;margin-top:16px;}
+.boosts-section h3{
+  font-size:11px;color:var(--sub);text-transform:uppercase;
+  letter-spacing:2px;margin-bottom:12px;
+  font-family:'Cinzel',serif;
+}
+.boost-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;}
+.boost-card{
+  background:linear-gradient(135deg,var(--card),var(--card2));
+  border:1px solid rgba(255,215,0,0.12);
+  border-radius:14px;padding:13px;
+  display:flex;align-items:center;gap:10px;
+  cursor:pointer;transition:all 0.2s;
+  position:relative;overflow:hidden;
+}
+.boost-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,215,0,0.06),transparent);
+  opacity:0;transition:opacity 0.2s;
+}
+.boost-card:hover::before{opacity:1;}
+.boost-card:hover{border-color:rgba(255,215,0,0.35);box-shadow:0 4px 20px rgba(255,215,0,0.1);}
+.boost-icon{font-size:26px;}
+.boost-info .name{font-size:12px;font-weight:800;color:var(--text);}
+.boost-info .cost{font-size:11px;color:var(--gold);display:flex;align-items:center;gap:3px;margin-top:2px;}
+
+/* ═══════════════ PROFILE ═══════════════ */
+.profile-header{display:flex;flex-direction:column;align-items:center;padding:20px 0;gap:10px;}
+.avatar{
+  width:78px;height:78px;border-radius:50%;
+  background:linear-gradient(135deg,#2a1060,#5a1fb5);
+  display:flex;align-items:center;justify-content:center;font-size:34px;
+  border:2px solid rgba(255,215,0,0.5);
+  box-shadow:0 0 25px rgba(255,215,0,0.2),inset 0 0 20px rgba(0,0,0,0.3);
+}
+.profile-name{font-size:19px;font-weight:900;font-family:'Cinzel',serif;color:var(--gold-light);}
+.profile-coins{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--gold);font-weight:700;}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:6px;width:100%;}
+.stat-card{
+  background:linear-gradient(135deg,var(--card),var(--card2));
+  border-radius:13px;padding:13px 6px;text-align:center;
+  border:1px solid rgba(255,215,0,0.1);
+}
+.stat-card .val{font-size:20px;font-weight:900;color:var(--gold);font-family:'Cinzel',serif;}
+.stat-card .lbl{font-size:9px;color:var(--sub);margin-top:3px;letter-spacing:0.5px;text-transform:uppercase;}
+.profile-section{width:100%;margin-top:18px;}
+.profile-section h3{font-size:10px;color:var(--sub);text-transform:uppercase;letter-spacing:2px;margin-bottom:9px;font-family:'Cinzel',serif;}
+.profile-row{
+  background:linear-gradient(135deg,var(--card),var(--card2));
+  border-radius:13px;padding:13px 15px;
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:7px;border:1px solid rgba(255,215,0,0.08);
+  cursor:pointer;transition:all 0.2s;
+}
+.profile-row:hover{border-color:rgba(255,215,0,0.25);background:linear-gradient(135deg,#1e1e38,#222240);}
+.profile-row .left{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;}
+.profile-row .r-icon{font-size:17px;}
+.profile-row .arrow{color:var(--sub);font-size:16px;}
+
+/* ═══════════════ SUPPORT BOT ═══════════════ */
+.support-page{display:flex;flex-direction:column;height:calc(100vh - 130px);}
+.chat-header{
+  background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(162,89,255,0.08));
+  border:1px solid rgba(255,215,0,0.2);
+  border-radius:16px;padding:14px 16px;
+  display:flex;align-items:center;gap:12px;margin-bottom:14px;
+}
+.bot-avatar{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,#7c3aed,#a259ff);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;border:2px solid rgba(255,215,0,0.3);
+  flex-shrink:0;
+  box-shadow:0 0 16px rgba(162,89,255,0.4);
+}
+.bot-info .bot-name{font-size:14px;font-weight:900;color:var(--gold-light);font-family:'Cinzel',serif;}
+.bot-info .bot-status{font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px;}
+.bot-info .bot-status::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse-green 1.5s infinite;}
+@keyframes pulse-green{0%,100%{opacity:1;}50%{opacity:0.4;}}
+
+.chat-messages{
+  flex:1;overflow-y:auto;
+  display:flex;flex-direction:column;gap:12px;
+  padding:4px 2px 12px;
+  scrollbar-width:thin;scrollbar-color:rgba(255,215,0,0.2) transparent;
+}
+.chat-messages::-webkit-scrollbar{width:3px;}
+.chat-messages::-webkit-scrollbar-thumb{background:rgba(255,215,0,0.2);border-radius:3px;}
+
+.msg{display:flex;gap:8px;align-items:flex-end;max-width:88%;}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.msg.bot{align-self:flex-start;}
+
+.msg-avatar{
+  width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:15px;
+}
+.msg.bot .msg-avatar{background:linear-gradient(135deg,#5a1fb5,#a259ff);}
+.msg.user .msg-avatar{background:linear-gradient(135deg,#1a3a6a,#2563eb);}
+
+.msg-bubble{
+  padding:10px 14px;border-radius:18px;font-size:13px;line-height:1.5;
+  max-width:260px;word-break:break-word;
+}
+.msg.bot .msg-bubble{
+  background:linear-gradient(135deg,var(--card2),#1a1a32);
+  border:1px solid rgba(255,215,0,0.1);
+  border-bottom-left-radius:4px;color:var(--text);
+}
+.msg.user .msg-bubble{
+  background:linear-gradient(135deg,#1a3a6a,#1e4080);
+  border:1px solid rgba(100,160,255,0.2);
+  border-bottom-right-radius:4px;color:#e0eeff;
+}
+
+.typing-indicator{display:flex;gap:5px;padding:12px 16px;}
+.typing-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--gold);opacity:0.5;
+  animation:typing 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2){animation-delay:0.2s;}
+.typing-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes typing{0%,60%,100%{transform:translateY(0);opacity:0.5;}30%{transform:translateY(-6px);opacity:1;}}
+
+.quick-questions{
+  display:flex;flex-wrap:wrap;gap:7px;
+  padding:8px 0 4px;
+}
+.quick-btn{
+  background:rgba(255,215,0,0.07);
+  border:1px solid rgba(255,215,0,0.2);
+  color:var(--gold-light);font-size:11px;font-weight:700;
+  padding:6px 12px;border-radius:20px;cursor:pointer;
+  transition:all 0.2s;font-family:'Nunito',sans-serif;
+}
+.quick-btn:hover{background:rgba(255,215,0,0.15);border-color:var(--gold);}
+
+.chat-input-area{
+  display:flex;gap:8px;padding-top:10px;
+  border-top:1px solid rgba(255,215,0,0.08);
+}
+.chat-input{
+  flex:1;background:var(--card2);
+  border:1px solid rgba(255,215,0,0.15);
+  border-radius:24px;padding:11px 16px;
+  color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;
+  outline:none;transition:border 0.2s;
+  resize:none;
+}
+.chat-input:focus{border-color:rgba(255,215,0,0.4);}
+.chat-input::placeholder{color:var(--sub);}
+.send-btn{
+  width:44px;height:44px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;transition:all 0.2s;flex-shrink:0;
+  box-shadow:0 4px 16px rgba(255,215,0,0.3);
+}
+.send-btn:hover{transform:scale(1.08);box-shadow:0 6px 20px rgba(255,215,0,0.45);}
+.send-btn:active{transform:scale(0.95);}
+
+/* TOAST */
+.toast{
+  position:fixed;top:68px;left:50%;
+  transform:translateX(-50%) translateY(-20px);
+  background:rgba(22,22,42,0.97);
+  border:1px solid rgba(255,215,0,0.3);
+  color:white;padding:10px 20px;border-radius:30px;
+  font-size:12px;font-weight:700;z-index:999;
+  opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
   <div class="logo">🎬 DramlarUz</div>
   <div class="lang-switcher">
@@ -594,82 +356,122 @@
   </div>
 </nav>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
-<!-- PAGES -->
-
-<!-- HOME -->
-<div class="page active" id="page-home">
-  <div class="hero">
-    <h1 data-i18n="hero_title">DramlarUz</h1>
-    <p data-i18n="hero_sub">Eng yaxshi dramalar — siz uchun!</p>
-  </div>
-
-  <div class="section-title" data-i18n="popular">🔥 Mashhur</div>
-  <div class="drama-grid">
-    <div class="drama-card">
-      <div class="drama-thumb">🌸</div>
-      <div class="drama-badge new" data-i18n="badge_new">YANGI</div>
-      <div class="drama-info">
-        <div class="drama-title" data-i18n="d1_title">Sevgining Rangi</div>
-        <div class="drama-meta">
-          <span>⭐ 4.9</span>
-          <span data-i18n="ep">16 qism</span>
-        </div>
-      </div>
-    </div>
-    <div class="drama-card">
-      <div class="drama-thumb">🏯</div>
-      <div class="drama-badge">HOT</div>
-      <div class="drama-info">
-        <div class="drama-title" data-i18n="d2_title">Qasr Sirlari</div>
-        <div class="drama-meta">
-          <span>⭐ 4.7</span>
-          <span data-i18n="ep2">24 qism</span>
-        </div>
-      </div>
-    </div>
-    <div class="drama-card">
-      <div class="drama-thumb">🌊</div>
-      <div class="drama-info">
-        <div class="drama-title" data-i18n="d3_title">To'lqinlar Osha</div>
-        <div class="drama-meta">
-          <span>⭐ 4.8</span>
-          <span data-i18n="ep3">20 qism</span>
-        </div>
-      </div>
-    </div>
-    <div class="drama-card">
-      <div class="drama-thumb">🌙</div>
-      <div class="drama-badge new" data-i18n="badge_new">YANGI</div>
-      <div class="drama-info">
-        <div class="drama-title" data-i18n="d4_title">Tun Yulduzlari</div>
-        <div class="drama-meta">
-          <span>⭐ 5.0</span>
-          <span data-i18n="ep4">12 qism</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- COIN TAP -->
-<div class="page" id="page-coin">
+<!-- ══════════════ COIN PAGE ══════════════ -->
+<div class="page active" id="page-coin">
   <div class="coin-page">
+
     <div class="coin-balance">
-      <div class="label" data-i18n="balance">Sizning tangalaringiz</div>
+      <div class="label" data-i18n="balance">TANGALARINGIZ</div>
       <div class="amount">🪙 <span id="coin-count">0</span></div>
     </div>
 
-    <div class="coin-wrap" id="coin-wrap">
-      <div class="coin" id="coin" onclick="tapCoin(event)">
-        <div class="coin-inner">🪙</div>
-      </div>
-      <div class="coin-rings">
-        <div class="ring"></div>
-        <div class="ring"></div>
-        <div class="ring"></div>
+    <!-- ORNATE COIN SVG -->
+    <div class="coin-wrap" id="coin-wrap" onclick="tapCoin(event)">
+      <svg class="coin-svg" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Base gold gradient -->
+          <radialGradient id="coinBase" cx="38%" cy="32%" r="65%">
+            <stop offset="0%" stop-color="#fff8c0"/>
+            <stop offset="25%" stop-color="#ffd700"/>
+            <stop offset="55%" stop-color="#d4a000"/>
+            <stop offset="80%" stop-color="#8a6000"/>
+            <stop offset="100%" stop-color="#5a3e00"/>
+          </radialGradient>
+          <!-- Rim gradient -->
+          <radialGradient id="rimGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="80%" stop-color="#b8860b"/>
+            <stop offset="95%" stop-color="#8a6500"/>
+            <stop offset="100%" stop-color="#5a3e00"/>
+          </radialGradient>
+          <!-- Inner shine -->
+          <radialGradient id="innerShine" cx="35%" cy="30%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,255,255,0.45)"/>
+            <stop offset="60%" stop-color="rgba(255,255,255,0)"/>
+          </radialGradient>
+          <!-- Edge shadow -->
+          <radialGradient id="edgeShadow" cx="50%" cy="50%" r="50%">
+            <stop offset="75%" stop-color="rgba(0,0,0,0)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0.55)"/>
+          </radialGradient>
+          <filter id="emboss">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+
+        <!-- Outer rim shadow -->
+        <circle cx="110" cy="114" r="101" fill="rgba(0,0,0,0.45)"/>
+        <!-- Outer rim -->
+        <circle cx="110" cy="110" r="101" fill="url(#rimGrad)"/>
+        <!-- Rim teeth / milling pattern -->
+        <g opacity="0.6">
+          <script type="text/javascript">/* rendered via JS below */</script>
+        </g>
+        <!-- Main coin face -->
+        <circle cx="110" cy="110" r="94" fill="url(#coinBase)"/>
+        <!-- Edge shadow overlay -->
+        <circle cx="110" cy="110" r="94" fill="url(#edgeShadow)"/>
+
+        <!-- Decorative outer ring line -->
+        <circle cx="110" cy="110" r="88" fill="none" stroke="rgba(255,230,80,0.5)" stroke-width="1.2"/>
+        <circle cx="110" cy="110" r="82" fill="none" stroke="rgba(180,130,0,0.4)" stroke-width="0.8"/>
+
+        <!-- Ornate border pattern - dots ring -->
+        <g id="dot-ring" opacity="0.7"></g>
+
+        <!-- Corner flourish petals -->
+        <!-- Top petal -->
+        <path d="M110 32 C100 50 88 58 90 74 C95 65 105 60 110 52 C115 60 125 65 130 74 C132 58 120 50 110 32Z" fill="rgba(255,220,50,0.55)" stroke="rgba(200,150,0,0.5)" stroke-width="0.7"/>
+        <!-- Bottom petal -->
+        <path d="M110 188 C100 170 88 162 90 146 C95 155 105 160 110 168 C115 160 125 155 130 146 C132 162 120 170 110 188Z" fill="rgba(255,220,50,0.55)" stroke="rgba(200,150,0,0.5)" stroke-width="0.7"/>
+        <!-- Left petal -->
+        <path d="M32 110 C50 100 58 88 74 90 C65 95 60 105 52 110 C60 115 65 125 74 130 C58 132 50 120 32 110Z" fill="rgba(255,220,50,0.55)" stroke="rgba(200,150,0,0.5)" stroke-width="0.7"/>
+        <!-- Right petal -->
+        <path d="M188 110 C170 100 162 88 146 90 C155 95 160 105 168 110 C160 115 155 125 146 130 C162 132 170 120 188 110Z" fill="rgba(255,220,50,0.55)" stroke="rgba(200,150,0,0.5)" stroke-width="0.7"/>
+
+        <!-- Diagonal corner ornaments -->
+        <path d="M55 55 L68 65 L65 68 L53 57Z" fill="rgba(255,220,50,0.45)"/>
+        <path d="M165 55 L152 65 L155 68 L167 57Z" fill="rgba(255,220,50,0.45)"/>
+        <path d="M55 165 L68 155 L65 152 L53 163Z" fill="rgba(255,220,50,0.45)"/>
+        <path d="M165 165 L152 155 L155 152 L167 163Z" fill="rgba(255,220,50,0.45)"/>
+
+        <!-- Inner circle frame -->
+        <circle cx="110" cy="110" r="58" fill="none" stroke="rgba(255,220,50,0.4)" stroke-width="1.5"/>
+        <circle cx="110" cy="110" r="54" fill="rgba(0,0,0,0.12)"/>
+        <circle cx="110" cy="110" r="54" fill="none" stroke="rgba(255,200,0,0.25)" stroke-width="0.8"/>
+
+        <!-- Center star / arabesque -->
+        <!-- 8-pointed star -->
+        <polygon points="110,62 116,92 140,84 122,104 148,110 122,116 140,136 116,128 110,158 104,128 80,136 98,116 72,110 98,104 80,84 104,92" fill="rgba(255,215,0,0.18)" stroke="rgba(255,200,0,0.5)" stroke-width="0.8"/>
+
+        <!-- Central 🎬 / drama symbol -->
+        <text x="110" y="120" text-anchor="middle" dominant-baseline="middle"
+          font-size="36" font-family="serif" fill="rgba(255,240,100,0.9)"
+          filter="url(#emboss)">🎬</text>
+
+        <!-- UZ text arc at top -->
+        <path id="topArc" d="M 40,110 A 70,70 0 0,1 180,110" fill="none"/>
+        <text font-size="8" fill="rgba(255,230,80,0.8)" font-family="'Cinzel',serif" letter-spacing="3">
+          <textPath href="#topArc" startOffset="18%">• DRAMLARUZ •</textPath>
+        </text>
+
+        <!-- value text bottom -->
+        <path id="botArc" d="M 50,120 A 65,65 0 0,0 170,120" fill="none"/>
+        <text font-size="7.5" fill="rgba(255,200,60,0.7)" font-family="'Cinzel',serif" letter-spacing="2">
+          <textPath href="#botArc" startOffset="22%">✦ 1 TANGA ✦</textPath>
+        </text>
+
+        <!-- Inner shine overlay -->
+        <circle cx="110" cy="110" r="94" fill="url(#innerShine)"/>
+      </svg>
+
+      <!-- Pulsing rings -->
+      <div class="coin-ring-anim">
+        <div class="cring"></div>
+        <div class="cring"></div>
+        <div class="cring"></div>
       </div>
     </div>
 
@@ -684,388 +486,4 @@
       <div class="refill-text" id="refill-text"></div>
     </div>
 
-    <div class="boosts-section">
-      <h3 data-i18n="boosts">🚀 Boosterlar</h3>
-      <div class="boost-grid">
-        <div class="boost-card" onclick="activateBoost('x2')">
-          <div class="boost-icon">⚡</div>
-          <div class="boost-info">
-            <div class="name" data-i18n="boost1">x2 Tanga</div>
-            <div class="cost">🪙 500</div>
-          </div>
-        </div>
-        <div class="boost-card" onclick="activateBoost('refill')">
-          <div class="boost-icon">🔋</div>
-          <div class="boost-info">
-            <div class="name" data-i18n="boost2">To'ldirish</div>
-            <div class="cost">🪙 200</div>
-          </div>
-        </div>
-        <div class="boost-card" onclick="activateBoost('x5')">
-          <div class="boost-icon">💥</div>
-          <div class="boost-info">
-            <div class="name" data-i18n="boost3">x5 Super</div>
-            <div class="cost">🪙 1500</div>
-          </div>
-        </div>
-        <div class="boost-card" onclick="activateBoost('auto')">
-          <div class="boost-icon">🤖</div>
-          <div class="boost-info">
-            <div class="name" data-i18n="boost4">Avto-tap</div>
-            <div class="cost">🪙 1000</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- PROFILE -->
-<div class="page" id="page-profile">
-  <div class="profile-header">
-    <div class="avatar">👤</div>
-    <div class="profile-name" data-i18n="user_name">Foydalanuvchi</div>
-    <div class="profile-coins">🪙 <span id="profile-coins">0</span> <span data-i18n="coins">tanga</span></div>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="val" id="stat-taps">0</div>
-      <div class="lbl" data-i18n="total_taps">Jami bosish</div>
-    </div>
-    <div class="stat-card">
-      <div class="val">12</div>
-      <div class="lbl" data-i18n="watched">Ko'rildi</div>
-    </div>
-    <div class="stat-card">
-      <div class="val">3</div>
-      <div class="lbl" data-i18n="saved">Saqlandi</div>
-    </div>
-  </div>
-
-  <div class="profile-section">
-    <h3 data-i18n="settings">⚙️ Sozlamalar</h3>
-    <div class="profile-row">
-      <div class="left"><span class="icon">🌐</span><span data-i18n="language">Til</span></div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span id="current-lang-label" style="color:var(--gold);font-weight:700;font-size:13px">O'zbek</span>
-        <span class="arrow">›</span>
-      </div>
-    </div>
-    <div class="profile-row">
-      <div class="left"><span class="icon">🔔</span><span data-i18n="notif">Bildirishnomalar</span></div>
-      <span class="arrow">›</span>
-    </div>
-    <div class="profile-row">
-      <div class="left"><span class="icon">🎨</span><span data-i18n="theme">Mavzu</span></div>
-      <span class="arrow">›</span>
-    </div>
-  </div>
-
-  <div class="profile-section">
-    <h3 data-i18n="about">ℹ️ Ilova haqida</h3>
-    <div class="profile-row">
-      <div class="left"><span class="icon">📱</span><span data-i18n="version">Versiya</span></div>
-      <span style="color:var(--sub);font-size:13px">1.0.0</span>
-    </div>
-    <div class="profile-row">
-      <div class="left"><span class="icon">💬</span><span data-i18n="support">Qo'llab-quvvatlash</span></div>
-      <span class="arrow">›</span>
-    </div>
-  </div>
-</div>
-
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <button class="nav-item active" onclick="showPage('home')" id="nav-home">
-    <span class="icon">🏠</span>
-    <span data-i18n="nav_home">Bosh sahifa</span>
-  </button>
-  <button class="nav-item" onclick="showPage('coin')" id="nav-coin">
-    <span class="icon">🪙</span>
-    <span data-i18n="nav_coin">Tangalar</span>
-  </button>
-  <button class="nav-item" onclick="showPage('profile')" id="nav-profile">
-    <span class="icon">👤</span>
-    <span data-i18n="nav_profile">Profil</span>
-  </button>
-</div>
-
-<script>
-  // ===== LANGUAGES =====
-  const i18n = {
-    uz: {
-      hero_title: 'DramlarUz',
-      hero_sub: 'Eng yaxshi dramalar — siz uchun!',
-      popular: '🔥 Mashhur',
-      badge_new: 'YANGI',
-      d1_title: 'Sevgining Rangi',
-      d2_title: 'Qasr Sirlari',
-      d3_title: "To'lqinlar Osha",
-      d4_title: 'Tun Yulduzlari',
-      ep: '16 qism', ep2: '24 qism', ep3: '20 qism', ep4: '12 qism',
-      balance: 'Sizning tangalaringiz',
-      energy: '⚡ Energiya',
-      boosts: '🚀 Boosterlar',
-      boost1: 'x2 Tanga', boost2: "To'ldirish", boost3: 'x5 Super', boost4: 'Avto-tap',
-      user_name: 'Foydalanuvchi',
-      coins: 'tanga',
-      total_taps: 'Jami bosish',
-      watched: "Ko'rildi",
-      saved: 'Saqlandi',
-      settings: '⚙️ Sozlamalar',
-      language: 'Til',
-      notif: 'Bildirishnomalar',
-      theme: 'Mavzu',
-      about: 'ℹ️ Ilova haqida',
-      version: 'Versiya',
-      support: "Qo'llab-quvvatlash",
-      nav_home: 'Bosh sahifa',
-      nav_coin: 'Tangalar',
-      nav_profile: 'Profil',
-      lang_label: "O'zbek",
-      tap_label: '+1',
-      energy_empty: 'Energiya tugadi! To\'lishi uchun: ',
-      energy_refill: 'min',
-      boost_x2: '⚡ x2 Boost faollashdi! 30 soniya',
-      boost_refill: '🔋 Energiya to\'ldi!',
-      boost_x5: '💥 x5 Mega Boost! 15 soniya',
-      boost_auto: '🤖 Avto-tap faollashdi! 20 soniya',
-      boost_no_coins: '❌ Yetarli tanga yo\'q!',
-    },
-    ru: {
-      hero_title: 'DramlarUz',
-      hero_sub: 'Лучшие дорамы — для вас!',
-      popular: '🔥 Популярное',
-      badge_new: 'НОВЫЙ',
-      d1_title: 'Цвет Любви',
-      d2_title: 'Тайны Замка',
-      d3_title: 'За Волнами',
-      d4_title: 'Ночные Звёзды',
-      ep: '16 эп.', ep2: '24 эп.', ep3: '20 эп.', ep4: '12 эп.',
-      balance: 'Ваши монеты',
-      energy: '⚡ Энергия',
-      boosts: '🚀 Бустеры',
-      boost1: 'x2 Монеты', boost2: 'Зарядить', boost3: 'x5 Супер', boost4: 'Авто-тап',
-      user_name: 'Пользователь',
-      coins: 'монет',
-      total_taps: 'Всего нажатий',
-      watched: 'Просмотрено',
-      saved: 'Сохранено',
-      settings: '⚙️ Настройки',
-      language: 'Язык',
-      notif: 'Уведомления',
-      theme: 'Тема',
-      about: 'ℹ️ О приложении',
-      version: 'Версия',
-      support: 'Поддержка',
-      nav_home: 'Главная',
-      nav_coin: 'Монеты',
-      nav_profile: 'Профиль',
-      lang_label: 'Русский',
-      boost_x2: '⚡ Буст x2 активирован! 30 сек',
-      boost_refill: '🔋 Энергия восстановлена!',
-      boost_x5: '💥 Мега буст x5! 15 сек',
-      boost_auto: '🤖 Авто-тап активирован! 20 сек',
-      boost_no_coins: '❌ Недостаточно монет!',
-      energy_empty: 'Энергия на нуле! Зарядка через: ',
-      energy_refill: 'мин',
-    },
-    en: {
-      hero_title: 'DramlarUz',
-      hero_sub: 'The best dramas — for you!',
-      popular: '🔥 Popular',
-      badge_new: 'NEW',
-      d1_title: 'Color of Love',
-      d2_title: 'Castle Secrets',
-      d3_title: 'Beyond the Waves',
-      d4_title: 'Night Stars',
-      ep: '16 ep.', ep2: '24 ep.', ep3: '20 ep.', ep4: '12 ep.',
-      balance: 'Your Coins',
-      energy: '⚡ Energy',
-      boosts: '🚀 Boosters',
-      boost1: 'x2 Coins', boost2: 'Refill', boost3: 'x5 Super', boost4: 'Auto-tap',
-      user_name: 'User',
-      coins: 'coins',
-      total_taps: 'Total Taps',
-      watched: 'Watched',
-      saved: 'Saved',
-      settings: '⚙️ Settings',
-      language: 'Language',
-      notif: 'Notifications',
-      theme: 'Theme',
-      about: 'ℹ️ About',
-      version: 'Version',
-      support: 'Support',
-      nav_home: 'Home',
-      nav_coin: 'Coins',
-      nav_profile: 'Profile',
-      lang_label: 'English',
-      boost_x2: '⚡ x2 Boost activated! 30s',
-      boost_refill: '🔋 Energy refilled!',
-      boost_x5: '💥 x5 Mega Boost! 15s',
-      boost_auto: '🤖 Auto-tap activated! 20s',
-      boost_no_coins: '❌ Not enough coins!',
-      energy_empty: 'Out of energy! Refill in: ',
-      energy_refill: 'min',
-    }
-  };
-
-  let lang = 'uz';
-  let coins = 0;
-  let totalTaps = 0;
-  let energy = 500;
-  const MAX_ENERGY = 500;
-  let multiplier = 1;
-  let boostTimeout = null;
-  let autoInterval = null;
-  let refillInterval = null;
-  let refillCountdown = 0;
-
-  function setLang(l) {
-    lang = l;
-    document.querySelectorAll('.lang-btn').forEach(b => {
-      b.classList.toggle('active', b.textContent === l.toUpperCase());
-    });
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (i18n[l][key]) el.textContent = i18n[l][key];
-    });
-    const ll = document.getElementById('current-lang-label');
-    if (ll) ll.textContent = i18n[l].lang_label || l;
-  }
-
-  function showPage(name) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.getElementById('page-' + name).classList.add('active');
-    document.getElementById('nav-' + name).classList.add('active');
-    if (name === 'profile') {
-      document.getElementById('profile-coins').textContent = coins;
-      document.getElementById('stat-taps').textContent = totalTaps;
-    }
-  }
-
-  function updateUI() {
-    document.getElementById('coin-count').textContent = coins;
-    const pct = (energy / MAX_ENERGY) * 100;
-    document.getElementById('energy-fill').style.width = pct + '%';
-    document.getElementById('energy-cur').textContent = energy;
-
-    const rt = document.getElementById('refill-text');
-    if (energy <= 0 && refillCountdown > 0) {
-      rt.innerHTML = (i18n[lang].energy_empty || 'Energy refills in: ') +
-        '<span>' + refillCountdown + ' ' + (i18n[lang].energy_refill || 'min') + '</span>';
-    } else {
-      rt.textContent = '';
-    }
-  }
-
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
-  }
-
-  function tapCoin(e) {
-    if (energy <= 0) {
-      if (!refillInterval) startRefillCountdown();
-      return;
-    }
-    energy = Math.max(0, energy - 1);
-    const earned = multiplier;
-    coins += earned;
-    totalTaps++;
-    updateUI();
-
-    // Floating text
-    const wrap = document.getElementById('coin-wrap');
-    const rect = wrap.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const el = document.createElement('div');
-    el.className = 'tap-float';
-    el.textContent = '+' + earned;
-    el.style.left = (x - 15) + 'px';
-    el.style.top = (y - 20) + 'px';
-    wrap.appendChild(el);
-    setTimeout(() => el.remove(), 800);
-  }
-
-  function startRefillCountdown() {
-    refillCountdown = 10;
-    updateUI();
-    refillInterval = setInterval(() => {
-      refillCountdown--;
-      if (refillCountdown <= 0) {
-        clearInterval(refillInterval);
-        refillInterval = null;
-        energy = MAX_ENERGY;
-        updateUI();
-        showToast('🔋 ' + (lang === 'uz' ? 'Energiya to\'ldi!' : lang === 'ru' ? 'Энергия восстановлена!' : 'Energy refilled!'));
-      } else {
-        updateUI();
-      }
-    }, 60000); // 1 minute each tick
-    // For demo: use 3 seconds per tick
-    clearInterval(refillInterval);
-    refillInterval = setInterval(() => {
-      refillCountdown--;
-      if (refillCountdown <= 0) {
-        clearInterval(refillInterval);
-        refillInterval = null;
-        energy = MAX_ENERGY;
-        updateUI();
-      } else {
-        updateUI();
-      }
-    }, 6000); // 6s per tick = 60s total for demo
-  }
-
-  function activateBoost(type) {
-    const costs = { x2: 500, refill: 200, x5: 1500, auto: 1000 };
-    const cost = costs[type];
-    if (coins < cost) {
-      showToast(i18n[lang].boost_no_coins);
-      return;
-    }
-    coins -= cost;
-    updateUI();
-
-    if (type === 'x2') {
-      multiplier = 2;
-      showToast(i18n[lang].boost_x2);
-      clearTimeout(boostTimeout);
-      boostTimeout = setTimeout(() => { multiplier = 1; }, 30000);
-    } else if (type === 'refill') {
-      energy = MAX_ENERGY;
-      if (refillInterval) { clearInterval(refillInterval); refillInterval = null; }
-      showToast(i18n[lang].boost_refill);
-      updateUI();
-    } else if (type === 'x5') {
-      multiplier = 5;
-      showToast(i18n[lang].boost_x5);
-      clearTimeout(boostTimeout);
-      boostTimeout = setTimeout(() => { multiplier = 1; }, 15000);
-    } else if (type === 'auto') {
-      showToast(i18n[lang].boost_auto);
-      if (autoInterval) clearInterval(autoInterval);
-      autoInterval = setInterval(() => {
-        if (energy > 0) {
-          energy = Math.max(0, energy - 1);
-          coins += multiplier;
-          totalTaps++;
-          updateUI();
-        }
-      }, 300);
-      setTimeout(() => { clearInterval(autoInterval); autoInterval = null; }, 20000);
-    }
-  }
-
-  // Init
-  setLang('uz');
-  updateUI();
-</script>
-</body>
-</html>
+ 
