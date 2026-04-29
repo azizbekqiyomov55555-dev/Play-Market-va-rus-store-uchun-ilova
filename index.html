@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="description" content="DramlarUz — O'zbek va xorij videolarini bepul tomosha qiling">
+<title>DramlarUz</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#c9a84c;--gold2:#e8c97a;
+  --bg:#08090f;--bg2:#0d0f1a;
+  --card:#111520;--card2:#181d2e;
+  --border:#1c2235;
+  --text:#eef2ff;--muted:#6b7a99;
+  --green:#22c55e;--red:#ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:var(--bg);}
+body{font-family:'DM Sans',sans-serif;color:var(--text);}
+
+/* SCREENS */
+.screen{position:fixed;inset:0;display:none;flex-direction:column;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+.screen.on{display:flex;}
+
+/* SPLASH */
+#S0{align-items:center;justify-content:center;gap:18px;background:var(--bg);}
+.sp-ring{
+  width:110px;height:110px;border-radius:30px;
+  background:linear-gradient(145deg,#141c30,#0a0d18);
+  border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-size:52px;
+  box-shadow:0 0 60px #c9a84c30;
+  animation:glow 2s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{box-shadow:0 0 40px #c9a84c25;}50%{box-shadow:0 0 70px #c9a84c55;}}
+.sp-name{font-family:'Playfair Display',serif;font-size:34px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sp-tag{font-size:12px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;}
+.sp-bar{width:180px;height:3px;background:#1a2030;border-radius:3px;overflow:hidden;}
+.sp-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));animation:fill 2s ease forwards;}
+@keyframes fill{from{width:0}to{width:100%}}
+
+/* HEADER */
+.hdr{
+  position:sticky;top:0;z-index:40;
+  background:rgba(8,9,15,.96);backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  height:58px;padding:0 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-shrink:0;
+}
+.hdr-logo{display:flex;align-items:center;gap:9px;}
+.hdr-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(145deg,#141c30,#0a0d18);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:17px;}
+.hdr-name{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.lang-wrap{display:flex;gap:4px;}
+.lpill{padding:5px 11px;border-radius:18px;font-size:12px;font-weight:700;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .18s;}
+.lpill.on{background:var(--gold);color:#000;border-color:var(--gold);}
+
+/* SEARCH */
+.sbar{margin:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:13px;display:flex;align-items:center;gap:9px;padding:11px 14px;}
+.sbar input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;}
+.sbar input::placeholder{color:var(--muted);}
+
+/* BANNER */
+.banner{margin:0 14px 20px;border-radius:20px;overflow:hidden;position:relative;cursor:pointer;background:linear-gradient(135deg,#101828,#180d28);border:1px solid var(--border);}
+.banner-img{width:100%;aspect-ratio:16/8;object-fit:cover;opacity:.6;display:none;}
+.banner-bg{width:100%;aspect-ratio:16/8;display:flex;align-items:center;justify-content:center;font-size:72px;opacity:.1;}
+.banner-shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,9,15,.95) 0%,rgba(8,9,15,.2) 55%,transparent 100%);}
+.banner-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:52px;height:52px;border-radius:50%;background:rgba(201,168,76,.18);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:20px;backdrop-filter:blur(4px);}
+.banner-body{position:absolute;bottom:0;left:0;right:0;padding:18px;}
+.banner-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold);color:#000;font-size:10px;font-weight:800;padding:3px 10px;border-radius:5px;letter-spacing:.6px;margin-bottom:8px;width:fit-content;}
+.banner-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;line-height:1.25;margin-bottom:4px;}
+.banner-meta{font-size:12px;color:var(--muted);}
+
+/* SECTION */
+.sec{padding:0 14px;margin-bottom:26px;}
+.sec-hd{display:flex;align-items:center;gap:8px;margin-bottom:13px;}
+.sec-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 7px var(--gold);}
+.sec-title{font-size:15px;font-weight:700;}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.vc{background:var(--card);border:1px solid var(--border);border-radius:15px;overflow:hidden;cursor:pointer;transition:transform .13s,border-color .13s;}
+.vc:active{transform:scale(.96);border-color:var(--gold);}
+.vc-thumb{aspect-ratio:16/9;background:var(--card2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.vc-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.vc-ph{font-size:28px;opacity:.3;}
+.vc-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.vc-play span{width:33px;height:33px;border-radius:50%;background:rgba(201,168,76,.88);display:flex;align-items:center;justify-content:center;font-size:13px;color:#000;}
+.free-tag{position:absolute;top:6px;left:6px;background:rgba(8,9,15,.82);border:1px solid var(--gold);color:var(--gold);font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;}
+.vc-info{padding:9px 11px 11px;}
+.vc-title{font-size:12px;font-weight:700;line-height:1.35;margin-bottom:2px;}
+.vc-meta{font-size:11px;color:var(--muted);}
+
+.empty-state{grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-state div:first-child{font-size:44px;margin-bottom:10px;opacity:.4;}
+
+/* NAV */
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:rgba(8,9,15,.97);border-top:1px solid var(--border);display:flex;padding:8px 0 22px;backdrop-filter:blur(20px);}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;color:var(--muted);transition:color .18s;}
+.nb.on{color:var(--gold);}
+.nb-iw{width:42px;height:30px;border-radius:9px;border:1px solid transparent;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .18s;}
+.nb.on .nb-iw{background:rgba(201,168,76,.12);border-color:rgba(201,168,76,.25);}
+.nb-lbl{font-size:10px;font-weight:700;letter-spacing:.2px;}
+
+/* PLAYER */
+#S2{background:var(--bg);padding-bottom:0;}
+.pl-hdr{position:sticky;top:0;z-index:40;background:rgba(8,9,15,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:54px;padding:0 14px;display:flex;align-items:center;gap:11px;flex-shrink:0;}
+.back{width:34px;height:34px;border-radius:9px;background:var(--card2);border:1px solid var(--border);color:var(--text);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.pl-hdr-title{font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.pl-wrap{width:100%;aspect-ratio:16/9;background:#000;flex-shrink:0;}
+.pl-wrap iframe{width:100%;height:100%;border:none;}
+.pl-body{padding:18px 14px 30px;}
+.pl-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:9px;line-height:1.3;}
+.pl-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
+.ptag{background:var(--card2);border:1px solid var(--border);color:var(--muted);font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;}
+.pl-desc{font-size:14px;color:var(--muted);line-height:1.75;}
+
+/* ABOUT */
+#S3{background:var(--bg);padding-bottom:90px;}
+.about-top{background:linear-gradient(160deg,#0f1828 0%,#080910 100%);border-bottom:1px solid var(--border);padding:36px 20px 28px;text-align:center;}
+.about-icon{width:76px;height:76px;border-radius:22px;background:linear-gradient(145deg,#141c30,#0a0d18);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:38px;margin:0 auto 14px;box-shadow:0 0 30px #c9a84c22;}
+.about-name{font-family:'Playfair Display',serif;font-size:25px;font-weight:700;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.about-ver{font-size:12px;color:var(--muted);margin-top:3px;}
+.acards{padding:16px 14px;display:flex;flex-direction:column;gap:10px;}
+.acard{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:16px;display:flex;align-items:center;gap:13px;cursor:default;}
+.acard.btn{cursor:pointer;transition:border-color .15s;}
+.acard.btn:active{border-color:var(--gold);}
+.ac-ico{width:42px;height:42px;border-radius:12px;background:var(--card2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
+.ac-info h4{font-size:13px;font-weight:700;margin-bottom:2px;}
+.ac-info p{font-size:12px;color:var(--muted);line-height:1.55;}
+
+/* ADMIN */
+#S4{background:var(--bg);padding-bottom:30px;}
+.adm-hdr{position:sticky;top:0;z-index:40;background:rgba(8,9,15,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:58px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.adm-hdr h2{font-size:15px;font-weight:700;color:var(--gold);}
+.adm-body{padding:14px;}
+.form-card{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:17px;margin-bottom:10px;}
+.form-card h3{font-size:14px;font-weight:700;color:var(--gold);margin-bottom:14px;}
+.fg{margin-bottom:11px;}
+.fl{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:5px;display:block;letter-spacing:.5px;text-transform:uppercase;}
+.fi{width:100%;padding:12px 13px;border-radius:11px;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .18s;}
+.fi:focus{border-color:var(--gold);}
+.fi::placeholder{color:var(--muted);}
+.fi-hint{font-size:11px;color:var(--muted);margin-top:4px;}
+.btn-g{width:100%;padding:13px;border-radius:11px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .18s;}
+.btn-g:active{opacity:.82;}
+.btn-o{width:100%;padding:11px;border-radius:11px;background:transparent;border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;}
+.btn-o:active{background:var(--card2);}
+.sec-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin:18px 0 10px;}
+.vi{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:13px;margin-bottom:9px;display:flex;align-items:flex-start;gap:11px;}
+.vi-num{width:29px;height:29px;border-radius:8px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.vi-inf{flex:1;min-width:0;}
+.vi-t{font-size:13px;font-weight:700;margin-bottom:2px;}
+.vi-id{font-size:11px;color:var(--muted);font-family:monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.del{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--red);padding:5px 11px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0;}
+.exp-box{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:16px;margin-top:14px;}
+.exp-box h4{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:6px;}
+.exp-box p{font-size:12px;color:var(--muted);margin-bottom:11px;line-height:1.6;}
+.exp-code{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px;font-size:11px;color:var(--muted);font-family:monospace;max-height:90px;overflow:auto;word-break:break-all;margin-bottom:10px;}
+
+/* LOGIN MODAL */
+.modal-bg{position:fixed;inset:0;z-index:200;background:rgba(8,9,15,.97);display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.on{display:flex;}
+.modal-box{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:30px 22px;width:100%;max-width:360px;text-align:center;}
+.modal-ico{font-size:46px;margin-bottom:13px;}
+.modal-title{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;margin-bottom:4px;}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:22px;}
+.modal-err{color:var(--red);font-size:13px;margin-top:9px;min-height:18px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--card2);border:1px solid var(--border);color:var(--text);padding:11px 18px;border-radius:11px;font-size:13px;font-weight:600;z-index:300;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* PRIVACY SCREEN */
+#privacyScreen{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;flex-direction:column;overflow:hidden;}
+.prv-header{background:rgba(8,9,15,.97);border-bottom:1px solid var(--border);padding:20px 20px 16px;text-align:center;flex-shrink:0;}
+.prv-logo{width:64px;height:64px;border-radius:18px;background:linear-gradient(145deg,#141c30,#0a0d18);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 10px;box-shadow:0 0 30px #c9a84c30;}
+.prv-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.prv-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+.prv-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 0;}
+.prv-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 15px;margin-bottom:10px;}
+.prv-section h3{font-size:13px;font-weight:700;color:var(--gold);margin-bottom:7px;display:flex;align-items:center;gap:6px;}
+.prv-section p,.prv-section li{font-size:12.5px;color:#b0b8cc;line-height:1.7;}
+.prv-section ul{padding-left:16px;margin-top:4px;}
+.prv-section li{margin-bottom:3px;}
+.prv-footer{padding:14px 16px 20px;flex-shrink:0;background:rgba(8,9,15,.97);border-top:1px solid var(--border);}
+.prv-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:13px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.prv-check input[type=checkbox]{width:18px;height:18px;accent-color:var(--gold);margin-top:1px;flex-shrink:0;cursor:pointer;}
+.prv-check span{font-size:12.5px;color:var(--muted);line-height:1.5;user-select:none;}
+.prv-check span b{color:var(--gold);}
+.btn-accept{width:100%;padding:14px;border-radius:13px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;border:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:opacity .18s;opacity:.35;}
+.btn-accept.active{opacity:1;}
+.btn-accept:active.active{opacity:.82;}
+.prv-scroll-hint{text-align:center;font-size:11px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:4px;}
+.scroll-indicator{display:inline-flex;align-items:center;gap:3px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.2);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--gold);}
+.prv-read-badge{position:fixed;bottom:130px;right:16px;background:var(--gold);color:#000;font-size:11px;font-weight:800;padding:5px 12px;border-radius:20px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:600;}
+.prv-read-badge.show{opacity:1;}
+@keyframes fadeOut{from{opacity:1;transform:scale(1);}to{opacity:0;transform:scale(.97);}}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div class="screen on" id="S0">
+  <div class="sp-ring">🎬</div>
+  <div class="sp-name">DramlarUz</div>
+  <div class="sp-tag">Cinema · Serials · Video</div>
+  <div class="sp-bar"><div class="sp-fill"></div></div>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="S1" style="padding-bottom:80px;">
+  <div class="hdr">
+    <div class="hdr-logo"><div class="hdr-icon">🎬</div><div class="hdr-name">DramlarUz</div></div>
+    <div class="lang-wrap">
+      <div class="lpill on" id="lpUZ" onclick="setLang('uz')">UZ</div>
+      <div class="lpill" id="lpRU" onclick="setLang('ru')">RU</div>
+    </div>
+  </div>
+
+  <div class="sbar">
+    <span style="font-size:15px;color:var(--muted)">🔍</span>
+    <input id="searchInp" placeholder="Video nomini qidiring..." oninput="doSearch()">
+  </div>
+
+  <div class="banner" id="banner" onclick="openVideo(0)">
+    <div class="banner-bg">🎬</div>
+    <div class="banner-shade"></div>
+    <div class="banner-play">▶</div>
+    <div class="banner-body">
+      <div class="banner-badge">⭐ <span id="bannerBadge">TAVSIYA ETILADI</span></div>
+      <div class="banner-title" id="bannerTitle">DramlarUz ga xush kelibsiz</div>
+      <div class="banner-meta" id="bannerMeta">O'zbek · 2024 · Bepul</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hd"><div class="sec-dot"></div><div class="sec-title" id="secTitle">Barcha videolar</div></div>
+    <div class="grid" id="videoGrid">
+      <div class="empty-state"><div>🎬</div><div id="emptyMsg">Hali video qo'shilmagan</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYER -->
+<div class="screen" id="S2">
+  <div class="pl-hdr">
+    <button class="back" onclick="closePlayer()">←</button>
+    <div class="pl-hdr-title" id="plHdrTitle"></div>
+  </div>
+  <div class="pl-wrap"><iframe id="plFrame" allowfullscreen allow="autoplay;encrypted-media"></iframe></div>
+  <div class="pl-body">
+    <div class="pl-title" id="plTitle"></div>
+    <div class="pl-tags" id="plTags"></div>
+    <div class="pl-desc" id="plDesc"></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="screen" id="S3" style="padding-bottom:80px;">
+  <div class="hdr">
+    <div class="hdr-logo"><div class="hdr-icon">🎬</div><div class="hdr-name">DramlarUz</div></div>
+  </div>
+  <div class="about-top">
+    <div class="about-icon">🎬</div>
+    <div class="about-name">DramlarUz</div>
+    <div class="about-ver" id="aboutVer">Versiya 1.0 · 2024</div>
+  </div>
+  <div class="acards">
+    <div class="acard">
+      <div class="ac-ico">📱</div>
+      <div class="ac-info">
+        <h4 id="aAbout">Ilova haqida</h4>
+        <p id="aAboutDesc">DramlarUz — muallif videolarini bepul tomosha qilish uchun qulay platforma. Yuqori sifat, sodda interfeys.</p>
+      </div>
+    </div>
+    <div class="acard">
+      <div class="ac-ico">👤</div>
+      <div class="ac-info">
+        <h4 id="aAuthor">Muallif</h4>
+        <p>Azizbek Qiyomov<br>© 2024 DramlarUz</p>
+      </div>
+    </div>
+    <div class="acard">
+      <div class="ac-ico">🔒</div>
+      <div class="ac-info">
+        <h4 id="aPrivacy">Maxfiylik</h4>
+        <p id="aPrivacyDesc">Ilova hech qanday shaxsiy ma'lumot to'plamaydi va uchinchi shaxslarga bermaydi.</p>
+      </div>
+    </div>
+    <div class="acard btn" onclick="showLoginModal()">
+      <div class="ac-ico">⚙️</div>
+      <div class="ac-info">
+        <h4 id="aAdmin">Boshqaruv paneli</h4>
+        <p id="aAdminDesc">Faqat administrator uchun</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="screen" id="S4">
+  <div class="adm-hdr">
+    <h2>⚙️ Admin Panel</h2>
+    <button class="btn-o" style="width:auto;padding:7px 14px;" onclick="exitAdmin()">← Chiqish</button>
+  </div>
+  <div class="adm-body">
+
+    <div class="form-card">
+      <h3>➕ Video qo'shish</h3>
+      <div class="fg"><label class="fl">Nomi (O'zbekcha) *</label><input class="fi" id="iUz" placeholder="Video nomi..."></div>
+      <div class="fg"><label class="fl">Nomi (Ruscha)</label><input class="fi" id="iRu" placeholder="Название видео..."></div>
+      <div class="fg"><label class="fl">Tavsif (O'zbekcha)</label><input class="fi" id="iDUz" placeholder="Qisqacha tavsif..."></div>
+      <div class="fg"><label class="fl">Tavsif (Ruscha)</label><input class="fi" id="iDRu" placeholder="Краткое описание..."></div>
+      <div class="fg">
+        <label class="fl">Google Drive ID *</label>
+        <input class="fi" id="iDrv" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgm...">
+        <div class="fi-hint">drive.google.com/file/d/<strong style="color:var(--gold)">BU_ID</strong>/view — shu ID ni oling</div>
+      </div>
+      <div class="fg"><label class="fl">Thumbnail rasm URL (ixtiyoriy)</label><input class="fi" id="iThumb" placeholder="https://...rasm.jpg"></div>
+      <div class="fg"><label class="fl">Yil</label><input class="fi" id="iYear" placeholder="2024" value="2024"></div>
+      <button class="btn-g" onclick="addVideo()">✅ Qo'shish</button>
+    </div>
+
+    <div class="sec-label" id="listLbl">Videolar ro'yxati</div>
+    <div id="adminList"></div>
+
+    <div class="exp-box">
+      <h4>📤 Eksport</h4>
+      <p id="expHelp">Kodni nusxalab, <code style="color:var(--gold)">const DEFAULT_VIDEOS=[...]</code> qismiga joylashtiring:</p>
+      <div class="exp-code" id="expCode">[]</div>
+      <button class="btn-o" onclick="copyExp()">📋 Kodni nusxalash</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="nav" id="nav">
+  <div class="nb on" id="nb1" onclick="go(1,'nb1')">
+    <div class="nb-iw">🏠</div>
+    <div class="nb-lbl" id="navLbl1">Bosh sahifa</div>
+  </div>
+  <div class="nb" id="nb3" onclick="go(3,'nb3')">
+    <div class="nb-iw">ℹ️</div>
+    <div class="nb-lbl" id="navLbl3">Haqida</div>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-bg" id="loginModal">
+  <div class="modal-box">
+    <div class="modal-ico">🔐</div>
+    <div class="modal-title">Admin kirish</div>
+    <div class="modal-sub">Boshqaruv paneliga kirish uchun parolni kiriting</div>
+    <input class="fi" id="passInp" type="password" placeholder="Parol..." onkeydown="if(event.key==='Enter')tryLogin()" style="margin-bottom:10px;">
+    <button class="btn-g" onclick="tryLogin()">Kirish</button>
+    <div class="modal-err" id="loginErr"></div>
+    <div style="margin-top:12px;"><button class="btn-o" onclick="closeLoginModal()">Bekor qilish</button></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- PRIVACY POLICY SCREEN -->
+<div id="privacyScreen">
+  <div class="prv-header">
+    <div class="prv-logo">🎬</div>
+    <div class="prv-title">DramlarUz</div>
+    <div class="prv-sub">Foydalanish shartlari va Maxfiylik siyosati</div>
+  </div>
+
+  <div class="prv-body" id="prvBody">
+
+    <div class="prv-section">
+      <h3>📋 Ilova haqida</h3>
+      <p><b style="color:var(--text)">DramlarUz</b> — bu O'zbekiston uchun yaratilgan video tomosha qilish platformasi. Ilova faqat ilova egasi tomonidan joylashtiriladigan original va litsenziyalangan video kontentni taqdim etadi.</p>
+    </div>
+
+    <div class="prv-section">
+      <h3>✅ Kontent haqida</h3>
+      <p>Ushbu ilovada joylashtirilgan barcha video va rasmlar:</p>
+      <ul>
+        <li>Ilova egasi — <b style="color:var(--text)">Azizbek Qiyomov</b> tomonidan tayyorlanadi yoki litsenziyalanadi</li>
+        <li>Faqat ilova egasining o'z kontenti yoki ruxsat berilgan materiallar joylashtiriladi</li>
+        <li>Uchinchi shaxslarning mualliflik huquqi himoyalangan materiallar ruxsatsiz ishlatilmaydi</li>
+        <li>Barcha kontent O'zbekiston Respublikasi va xalqaro mualliflik huquqi qonunlariga muvofiq joylashtiriladi</li>
+      </ul>
+    </div>
+
+    <div class="prv-section">
+      <h3>🔒 Shaxsiy ma'lumotlar</h3>
+      <p>Biz foydalanuvchilarning maxfiyligini hurmat qilamiz:</p>
+      <ul>
+        <li>Ilova hech qanday shaxsiy ma'lumot (ism, telefon, manzil) to'plamaydi</li>
+        <li>Foydalanuvchi ma'lumotlari uchinchi shaxslarga berilmaydi yoki sotilmaydi</li>
+        <li>Ilova faqat qurilmangizda mahalliy (localStorage) saqlash imkoniyatidan foydalanadi</li>
+        <li>Analytics yoki reklama kuzatuv tizimlari ishlatilmaydi</li>
+      </ul>
+    </div>
+
+    <div class="prv-section">
+      <h3>🚫 Taqiqlangan harakatlar</h3>
+      <p>Ilova foydalanuvchilari quyidagi harakatlarni amalga oshirmasligi kerak:</p>
+      <ul>
+        <li>Ilovadagi kontentni ruxsatsiz ko'chirish, tarqatish yoki sotish</li>
+        <li>Ilovani buzish, xakerlik yoki noto'g'ri maqsadlarda ishlatish</li>
+        <li>Boshqa foydalanuvchilarga zarar yetkazuvchi harakatlar qilish</li>
+        <li>Qonunga zid maqsadlarda ilovadan foydalanish</li>
+      </ul>
+    </div>
+
+    <div class="prv-section">
+      <h3>📱 Xizmat shartlari</h3>
+      <ul>
+        <li>Ilova <b style="color:var(--text)">bepul</b> taqdim etiladi</li>
+        <li>Kontent doimo yangilanib turadi va o'zgartirilishi mumkin</li>
+        <li>Texnik nosozliklar yuzasida murojaat qilish huquqingiz bor</li>
+        <li>Ilova egasi xizmat shartlarini o'zgartirish huquqini o'zida saqlab qoladi</li>
+      </ul>
+    </div>
+
+    <div class="prv-section">
+      <h3>📞 Murojaat</h3>
+      <p>Savollar va takliflar uchun:</p>
+      <ul>
+        <li>Muallif: <b style="color:var(--text)">Azizbek Qiyomov</b></li>
+        <li>© 2024 DramlarUz. Barcha huquqlar himoyalangan.</li>
+      </ul>
+    </div>
+
+    <div style="height:10px;"></div>
+  </div>
+
+  <div class="prv-footer">
+    <div class="prv-scroll-hint" id="scrollHint">
+      <span class="scroll-indicator">⬇ To'liq o'qing</span>
+    </div>
+    <label class="prv-check" id="prvCheckLabel">
+      <input type="checkbox" id="prvCheck" onchange="toggleAccept()" disabled>
+      <span>Men <b>Foydalanish shartlari</b> va <b>Maxfiylik siyosati</b>ni to'liq o'qidim va roziman</span>
+    </label>
+    <button class="btn-accept" id="btnAccept" onclick="acceptPrivacy()" disabled>
+      ✅ Roziman, davom etish
+    </button>
+  </div>
+</div>
+
+<div class="prv-read-badge" id="readBadge">✓ O'qib bo'ldingiz!</div>
+
+<script>
+// ═══════════════════════════════════════════════
+// SOZLAMALAR
+// ═══════════════════════════════════════════════
+const PASS = "admin2024";          // ← parolni o'zgartiring!
+
+// --- PRIVACY POLICY ---
+(function() {
+  const accepted = localStorage.getItem('duz_privacy_accepted');
+  const prvScreen = document.getElementById('privacyScreen');
+  const prvBody = document.getElementById('prvBody');
+  const prvCheck = document.getElementById('prvCheck');
+  const prvCheckLabel = document.getElementById('prvCheckLabel');
+  const btnAccept = document.getElementById('btnAccept');
+  const scrollHint = document.getElementById('scrollHint');
+  const readBadge = document.getElementById('readBadge');
+
+  if (accepted === '1') {
+    prvScreen.style.display = 'none';
+    return;
+  }
+
+  let scrolledToBottom = false;
+
+  prvBody.addEventListener('scroll', function() {
+    const threshold = prvBody.scrollHeight - prvBody.clientHeight - 40;
+    if (prvBody.scrollTop >= threshold && !scrolledToBottom) {
+      scrolledToBottom = true;
+      prvCheck.disabled = false;
+      prvCheckLabel.style.cursor = 'pointer';
+      scrollHint.innerHTML = '<span style="color:var(--green);font-size:12px;">✓ To\'liq o\'qildi</span>';
+      readBadge.classList.add('show');
+      setTimeout(() => readBadge.classList.remove('show'), 2500);
+    }
+    if (prvBody.scrollTop < threshold && !scrolledToBottom) {
+      const pct = Math.round((prvBody.scrollTop / (prvBody.scrollHeight - prvBody.clientHeight)) * 100);
+      scrollHint.innerHTML = `<span class="scroll-indicator">⬇ ${pct}% o'qildi — pastga o'tkazing</span>`;
+    }
+  });
+
+  window.toggleAccept = function() {
+    if (prvCheck.checked) {
+      btnAccept.disabled = false;
+      btnAccept.classList.add('active');
+    } else {
+      btnAccept.disabled = true;
+      btnAccept.classList.remove('active');
+    }
+  };
+
+  window.acceptPrivacy = function() {
+    if (!prvCheck.checked) return;
+    localStorage.setItem('duz_privacy_accepted', '1');
+    prvScreen.style.animation = 'fadeOut .35s ease forwards';
+    setTimeout(() => { prvScreen.style.display = 'none'; }, 350);
+  };
+})();
+
+// Kod ichiga yozilgan doimiy videolar (bo'sh qoldiring, admin orqali qo'shing)
+const DEFAULT_VIDEOS = [
+  // Misol (o'chiring yoki o'zgartiring):
+  // { titleUz:"Mening videom", titleRu:"Моё видео", descUz:"Tavsif", descRu:"Описание", driveId:"GOOGLE_DRIVE_ID", thumb:"", year:"2024" }
+];
+// ═══════════════════════════════════════════════
+
+let lang = 'uz';
+let videos = [];
+let filtered = [];
+
+// --- UTILS ---
+const $ = id => document.getElementById(id);
+const t = (uz, ru) => lang === 'uz' ? uz : ru;
+
+function toast(msg) {
+  const el = $('toast');
+  el.textContent = msg;
+  el.classList.add('on');
+  setTimeout(() => el.classList.remove('on'), 2500);
+}
+
+// --- LANG ---
+function setLang(l) {
+  lang = l;
+  $('lpUZ').classList.toggle('on', l === 'uz');
+  $('lpRU').classList.toggle('on', l === 'ru');
+  updateTexts();
+  renderGrid(filtered);
+  refreshBanner();
+}
+
+function updateTexts() {
+  $('searchInp').placeholder = t("Video nomini qidiring...","Поиск видео...");
+  $('bannerBadge').textContent = t("TAVSIYA ETILADI","РЕКОМЕНДУЕМ");
+  $('secTitle').textContent = t("Barcha videolar","Все видео");
+  $('emptyMsg').textContent = t("Hali video qo'shilmagan","Видео ещё не добавлены");
+  $('navLbl1').textContent = t("Bosh sahifa","Главная");
+  $('navLbl3').textContent = t("Haqida","О нас");
+  $('aAbout').textContent = t("Ilova haqida","О приложении");
+  $('aAboutDesc').textContent = t("DramlarUz — muallif videolarini bepul tomosha qilish uchun qulay platforma.","DramlarUz — удобная платформа для просмотра авторских видео бесплатно.");
+  $('aAuthor').textContent = t("Muallif","Автор");
+  $('aPrivacy').textContent = t("Maxfiylik","Конфиденциальность");
+  $('aPrivacyDesc').textContent = t("Ilova hech qanday shaxsiy ma'lumot to'plamaydi.","Приложение не собирает личные данные.");
+  $('aAdmin').textContent = t("Boshqaruv paneli","Панель управления");
+  $('aAdminDesc').textContent = t("Faqat administrator uchun","Только для администратора");
+  $('aboutVer').textContent = t("Versiya 1.0 · 2024","Версия 1.0 · 2024");
+  $('listLbl').textContent = t("Videolar ro'yxati","Список видео");
+}
+
+// --- DATA ---
+function loadData() {
+  const saved = localStorage.getItem('duz_v2');
+  videos = saved ? JSON.parse(saved) : [...DEFAULT_VIDEOS];
+  filtered = [...videos];
+}
+function saveData() {
+  localStorage.setItem('duz_v2', JSON.stringify(videos));
+}
+
+// --- BANNER ---
+function refreshBanner() {
+  if (!videos.length) return;
+  const v = videos[0];
+  $('bannerTitle').textContent = v[lang === 'uz' ? 'titleUz' : 'titleRu'] || v.titleUz;
+  $('bannerMeta').textContent = t("O'zbek","Узбекский") + ` · ${v.year||2024} · ` + t("Bepul","Бесплатно");
+  $('banner').onclick = () => openVideo(0);
+}
+
+// --- GRID ---
+function renderGrid(list) {
+  const g = $('videoGrid');
+  if (!list.length) {
+    g.innerHTML = `<div class="empty-state"><div>🎬</div><div>${t("Hali video qo'shilmagan","Видео ещё не добавлены")}</div></div>`;
+    return;
+  }
+  g.innerHTML = list.map(v => {
+    const idx = videos.indexOf(v);
+    const title = v[lang === 'uz' ? 'titleUz' : 'titleRu'] || v.titleUz;
+    return `<div class="vc" onclick="openVideo(${idx})">
+      <div class="vc-thumb">
+        ${v.thumb ? `<img src="${v.thumb}" loading="lazy">` : ''}
+        <div class="vc-ph">🎬</div>
+        <div class="vc-play"><span>▶</span></div>
+        <div class="free-tag">${t("BEPUL","БЕСПЛАТНО")}</div>
+      </div>
+      <div class="vc-info">
+        <div class="vc-title">${title}</div>
+        <div class="vc-meta">${v.year||2024}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// --- SEARCH ---
+function doSearch() {
+  const q = $('searchInp').value.toLowerCase().trim();
+  filtered = q ? videos.filter(v =>
+    (v.titleUz||'').toLowerCase().includes(q) ||
+    (v.titleRu||'').toLowerCase().includes(q)
+  ) : [...videos];
+  renderGrid(filtered);
+}
+
+// --- PLAYER ---
+function openVideo(idx) {
+  const v = videos[idx];
+  if (!v) return;
+  const title = v[lang === 'uz' ? 'titleUz' : 'titleRu'] || v.titleUz;
+  $('plHdrTitle').textContent = title;
+  $('plTitle').textContent = title;
+  $('plDesc').textContent = v[lang === 'uz' ? 'descUz' : 'descRu'] || v.descUz || '';
+  $('plTags').innerHTML = `<span class="ptag">${t('Bepul','Бесплатно')}</span><span class="ptag">${v.year||2024}</span>`;
+  $('plFrame').src = `https://drive.google.com/file/d/${v.driveId}/preview`;
+  showScreen(2);
+}
+function closePlayer() {
+  $('plFrame').src = '';
+  showScreen(1, 'nb1');
+}
+
+// --- SCREENS ---
+function showScreen(n, navId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  $('S' + n).classList.add('on');
+  $('nav').style.display = (n === 2 || n === 4) ? 'none' : 'flex';
+  if (navId) {
+    document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+    $(navId).classList.add('on');
+  }
+}
+function go(n, navId) { showScreen(n, navId); }
+
+// --- ADMIN ---
+function showLoginModal() {
+  $('passInp').value = '';
+  $('loginErr').textContent = '';
+  $('loginModal').classList.add('on');
+  setTimeout(() => $('passInp').focus(), 200);
+}
+function closeLoginModal() { $('loginModal').classList.remove('on'); }
+function tryLogin() {
+  if ($('passInp').value === PASS) {
+    closeLoginModal();
+    renderAdminList();
+    showScreen(4);
+  } else {
+    $('loginErr').textContent = t("Parol noto'g'ri!", "Неверный пароль!");
+    $('passInp').value = '';
+  }
+}
+function exitAdmin() { showScreen(3, 'nb3'); }
+
+function addVideo() {
+  const titleUz = $('iUz').value.trim();
+  const driveId = $('iDrv').value.trim();
+  if (!titleUz || !driveId) {
+    toast(t("⚠️ Nom va Drive ID kerak!","⚠️ Нужно название и Drive ID!"));
+    return;
+  }
+  videos.push({
+    titleUz,
+    titleRu: $('iRu').value.trim() || titleUz,
+    descUz:  $('iDUz').value.trim(),
+    descRu:  $('iDRu').value.trim(),
+    driveId,
+    thumb:   $('iThumb').value.trim(),
+    year:    $('iYear').value.trim() || '2024',
+  });
+  saveData();
+  ['iUz','iRu','iDUz','iDRu','iDrv','iThumb'].forEach(id => $(id).value = '');
+  $('iYear').value = '2024';
+  filtered = [...videos];
+  renderGrid(filtered);
+  refreshBanner();
+  renderAdminList();
+  toast(t("✅ Video qo'shildi!","✅ Видео добавлено!"));
+}
+
+function deleteVideo(i) {
+  if (!confirm(t("Bu videoni o'chirasizmi?","Удалить это видео?"))) return;
+  videos.splice(i, 1);
+  saveData();
+  filtered = [...videos];
+  renderGrid(filtered);
+  refreshBanner();
+  renderAdminList();
+  toast(t("🗑 O'chirildi","🗑 Удалено"));
+}
+
+function renderAdminList() {
+  const el = $('adminList');
+  if (!videos.length) {
+    el.innerHTML = `<div class="empty-state" style="grid-column:initial;padding:30px 0;"><div>🎬</div><div>${t("Video yo'q","Видео нет")}</div></div>`;
+    $('expCode').textContent = '[]';
+    return;
+  }
+  el.innerHTML = videos.map((v, i) => `
+    <div class="vi">
+      <div class="vi-num">${i+1}</div>
+      <div class="vi-inf">
+        <div class="vi-t">${v.titleUz}</div>
+        <div class="vi-id">ID: ${v.driveId}</div>
+      </div>
+      <button class="del" onclick="deleteVideo(${i})">O'chirish</button>
+    </div>
+  `).join('');
+  $('expCode').textContent = JSON.stringify(videos, null, 2);
+}
+
+function copyExp() {
+  navigator.clipboard.writeText($('expCode').textContent)
+    .then(() => toast(t("📋 Nusxalandi!","📋 Скопировано!")))
+    .catch(() => toast(t("Qo'lda nusxalang","Скопируйте вручную")));
+}
+
+// --- BOOT ---
+loadData();
+filtered = [...videos];
+setLang('uz');
+renderGrid(filtered);
+refreshBanner();
+
+setTimeout(() => {
+  $('S0').classList.remove('on');
+  showScreen(1, 'nb1');
+}, 2100);
+</script>
+</body>
+</html>
