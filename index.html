@@ -3,788 +3,688 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DramlarUz</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>DramlarUz — Dramatik seriallar platformasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold: #FFD700;
     --gold2: #FFA500;
-    --blue: #4361EE;
-    --purple: #7B2FBE;
-    --pink: #FF006E;
-    --bg: #0A0A1A;
-    --card: #12122A;
-    --card2: #1A1A35;
-    --text: #F0F0FF;
-    --sub: #8888BB;
-    --neon: #00F5FF;
+    --dark: #0a0a1a;
+    --card: #12122a;
+    --accent: #e040fb;
+    --text: #f0e6ff;
+    --radius: 18px;
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: 'Nunito', sans-serif;
-    background: var(--bg);
+    background: var(--dark);
     color: var(--text);
+    font-family: 'Nunito', sans-serif;
     min-height: 100vh;
-    max-width: 480px;
-    margin: 0 auto;
-    position: relative;
     overflow-x: hidden;
   }
-  /* bg stars */
-  body::before {
-    content:'';
-    position:fixed;
-    inset:0;
-    background: 
-      radial-gradient(ellipse at 20% 20%, rgba(67,97,238,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(123,47,190,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, rgba(0,245,255,0.05) 0%, transparent 70%);
-    pointer-events:none;
-    z-index:0;
+
+  /* STARS background */
+  .stars {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse at 20% 30%, #1a0033 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, #001a33 0%, transparent 60%),
+                var(--dark);
+  }
+  .stars::after {
+    content:''; position:absolute; inset:0;
+    background-image:
+      radial-gradient(1px 1px at 10% 20%, #fff8 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, #fff6 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 10%, #fff8 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 40%, #fff5 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 80%, #fff7 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 90%, #fff6 0%, transparent 100%);
   }
 
-  /* ===== HEADER ===== */
-  .header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(10,10,26,0.95);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(67,97,238,0.3);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Orbitron', monospace;
-    font-size: 18px;
-    font-weight: 900;
-  }
-  .logo span.d { color: #4361EE; }
-  .logo span.u { color: #FF006E; }
-  .logo-icon {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, #4361EE, #7B2FBE);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px;
-    box-shadow: 0 0 15px rgba(67,97,238,0.5);
-  }
+  /* LAYOUT */
+  .wrap { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding: 0 16px 60px; }
 
-  /* Lang switcher */
-  .lang-switcher {
-    display: flex;
-    gap: 4px;
-    background: var(--card2);
-    border-radius: 20px;
-    padding: 4px;
-    border: 1px solid rgba(67,97,238,0.2);
-  }
-  .lang-btn {
-    padding: 4px 10px;
-    border-radius: 16px;
-    border: none;
-    background: transparent;
-    color: var(--sub);
-    font-family: 'Nunito', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-  .lang-btn.active {
-    background: linear-gradient(135deg, #4361EE, #7B2FBE);
-    color: white;
-    box-shadow: 0 0 10px rgba(67,97,238,0.4);
-  }
-
-  /* ===== PAGES ===== */
-  .page { display: none; padding: 20px 20px 100px; position: relative; z-index:1; }
-  .page.active { display: block; }
-
-  /* ===== BOOST PAGE ===== */
-  .boost-header {
+  /* HEADER */
+  header {
     text-align: center;
-    margin-bottom: 30px;
+    padding: 40px 0 20px;
   }
-  .boost-header h1 {
-    font-family: 'Orbitron', monospace;
-    font-size: 22px;
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
     font-weight: 900;
-    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--pink));
+    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 6px;
+    letter-spacing: -1px;
+    line-height: 1.1;
   }
-  .boost-header p { color: var(--sub); font-size: 14px; }
-
-  /* Progress bar */
-  .progress-container {
-    background: var(--card2);
-    border-radius: 20px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
-    border: 1px solid rgba(255,215,0,0.2);
-  }
-  .progress-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .progress-label { font-size: 13px; color: var(--sub); }
-  .progress-count {
-    font-family: 'Orbitron', monospace;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--gold);
-  }
-  .progress-bar {
-    height: 10px;
-    background: rgba(255,255,255,0.07);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    border-radius: 10px;
-    background: linear-gradient(90deg, var(--gold2), var(--gold), #FFF176);
-    transition: width 0.3s ease;
-    box-shadow: 0 0 10px rgba(255,215,0,0.5);
-  }
-  .refill-timer {
-    text-align: center;
+  header p {
     margin-top: 8px;
-    font-size: 12px;
-    color: var(--sub);
+    color: #b0a0cc;
+    font-size: 0.95rem;
   }
-  .refill-timer span { color: var(--neon); font-weight: 700; }
 
-  /* COIN BUTTON */
-  .coin-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 30px 0;
-    position: relative;
+  /* LANG SWITCHER */
+  .lang-bar {
+    display: flex; justify-content: center; gap: 10px;
+    margin: 18px 0 30px;
   }
-  .coin-ring {
-    position: absolute;
-    width: 230px; height: 230px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,215,0,0.2);
-    animation: ringPulse 2s infinite;
-  }
-  .coin-ring:nth-child(2) { width: 270px; height: 270px; animation-delay: 0.5s; border-color: rgba(255,215,0,0.1); }
-  .coin-ring:nth-child(3) { width: 310px; height: 310px; animation-delay: 1s; border-color: rgba(255,215,0,0.05); }
-  @keyframes ringPulse {
-    0%,100% { transform: scale(1); opacity:1; }
-    50% { transform: scale(1.05); opacity:0.5; }
-  }
-  .coin-btn {
-    width: 190px; height: 190px;
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    z-index: 10;
-    background: conic-gradient(
-      from 0deg,
-      #FFD700, #FFA500, #FFD700, #FFEC6E, #FFD700, #FF8C00, #FFD700
-    );
-    box-shadow:
-      0 0 40px rgba(255,215,0,0.6),
-      0 0 80px rgba(255,215,0,0.3),
-      inset 0 2px 10px rgba(255,255,255,0.4),
-      inset 0 -4px 10px rgba(0,0,0,0.3);
-    transition: transform 0.1s, box-shadow 0.1s;
-    animation: coinSpin 8s linear infinite;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-  }
-  @keyframes coinSpin {
-    0% { filter: brightness(1); }
-    50% { filter: brightness(1.2); }
-    100% { filter: brightness(1); }
-  }
-  .coin-btn:active {
-    transform: scale(0.92);
-    box-shadow: 0 0 20px rgba(255,215,0,0.4), 0 0 40px rgba(255,215,0,0.2);
-  }
-  .coin-btn.depleted {
-    background: conic-gradient(from 0deg, #555, #444, #555, #666, #555);
-    box-shadow: 0 0 20px rgba(100,100,100,0.3);
-    animation: none;
-    cursor: not-allowed;
-  }
-  .coin-icon { font-size: 52px; line-height: 1; }
-  .coin-text {
-    font-family: 'Orbitron', monospace;
-    font-size: 11px;
+  .lang-btn {
+    padding: 7px 20px;
+    border-radius: 50px;
+    border: 2px solid #3a2a5a;
+    background: transparent;
+    color: #b0a0cc;
+    font-family: 'Nunito', sans-serif;
     font-weight: 700;
-    color: rgba(0,0,0,0.6);
-    letter-spacing: 1px;
-  }
-
-  /* Floating +1 */
-  .float-score {
-    position: absolute;
-    font-family: 'Orbitron', monospace;
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--gold);
-    text-shadow: 0 0 20px rgba(255,215,0,0.8);
-    pointer-events: none;
-    z-index: 999;
-    animation: floatUp 0.8s ease-out forwards;
-  }
-  @keyframes floatUp {
-    0% { opacity:1; transform: translateY(0) scale(1); }
-    100% { opacity:0; transform: translateY(-80px) scale(1.4); }
-  }
-
-  /* Stats cards */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-top: 20px;
-  }
-  .stat-card {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 16px;
-    border: 1px solid rgba(67,97,238,0.15);
-    text-align: center;
-  }
-  .stat-icon { font-size: 26px; margin-bottom: 6px; }
-  .stat-num {
-    font-family: 'Orbitron', monospace;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--gold);
-  }
-  .stat-label { font-size: 11px; color: var(--sub); margin-top: 2px; }
-
-  /* ===== PROFILE PAGE ===== */
-  .profile-hero {
-    background: linear-gradient(135deg, rgba(67,97,238,0.2), rgba(123,47,190,0.2));
-    border: 1px solid rgba(67,97,238,0.3);
-    border-radius: 24px;
-    padding: 30px 20px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .avatar {
-    width: 80px; height: 80px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #4361EE, #7B2FBE);
-    margin: 0 auto 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 36px;
-    box-shadow: 0 0 25px rgba(67,97,238,0.5);
-    border: 3px solid rgba(67,97,238,0.5);
-  }
-  .profile-name {
-    font-family: 'Orbitron', monospace;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 4px;
-  }
-  .profile-sub { color: var(--sub); font-size: 13px; }
-  .profile-badge {
-    display: inline-block;
-    margin-top: 10px;
-    background: linear-gradient(135deg, var(--gold2), var(--gold));
-    color: #000;
-    font-size: 12px;
-    font-weight: 800;
-    padding: 4px 14px;
-    border-radius: 20px;
-  }
-
-  .profile-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .ps-card {
-    background: var(--card);
-    border-radius: 16px;
-    padding: 14px 10px;
-    text-align: center;
-    border: 1px solid rgba(67,97,238,0.15);
-  }
-  .ps-icon { font-size: 22px; margin-bottom: 4px; }
-  .ps-num { font-family:'Orbitron',monospace; font-size:16px; font-weight:700; color:var(--gold); }
-  .ps-label { font-size:10px; color:var(--sub); margin-top:2px; }
-
-  .menu-section { margin-bottom: 20px; }
-  .menu-title {
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--sub);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    padding-left: 4px;
-  }
-  .menu-item {
-    background: var(--card);
-    border-radius: 14px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 8px;
-    border: 1px solid rgba(67,97,238,0.1);
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s;
   }
-  .menu-item:hover { border-color: rgba(67,97,238,0.4); background: var(--card2); }
-  .menu-item-icon {
-    width: 40px; height: 40px;
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
+  .lang-btn.active, .lang-btn:hover {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: #0a0a1a;
+    border-color: var(--gold);
   }
-  .menu-item-text { flex:1; }
-  .menu-item-title { font-size: 15px; font-weight: 700; }
-  .menu-item-sub { font-size: 12px; color: var(--sub); margin-top:2px; }
-  .menu-arrow { color: var(--sub); font-size: 18px; }
 
-  /* ===== BOTTOM NAV ===== */
+  /* BOOSTER COIN */
+  .booster-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 28px 20px 24px;
+    text-align: center;
+    border: 1px solid #2a1a4a;
+    margin-bottom: 22px;
+    box-shadow: 0 8px 40px #FFD70022;
+  }
+  .booster-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .booster-section .sub {
+    font-size: 0.85rem;
+    color: #9080b0;
+    margin-bottom: 20px;
+  }
+
+  /* COIN */
+  .coin-wrap {
+    display: flex; justify-content: center; align-items: center;
+    margin-bottom: 20px;
+  }
+  .coin {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ffe566, #ffa500 60%, #cc7700);
+    border: 5px solid #FFD700;
+    box-shadow: 0 0 0 4px #ffd70033, 0 8px 32px #FFD70055, inset 0 -4px 12px #cc770066;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.08s, box-shadow 0.08s;
+    position: relative;
+    animation: floatCoin 3s ease-in-out infinite;
+  }
+  .coin:active { transform: scale(0.91); box-shadow: 0 2px 10px #FFD70044; }
+  @keyframes floatCoin {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .coin.clicked { animation: popCoin 0.15s ease; }
+  @keyframes popCoin {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+    100% { transform: scale(1); }
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: #1e1a38;
+    border-radius: 50px;
+    height: 16px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border: 1px solid #3a2a6a;
+  }
+  .progress-bar {
+    height: 100%;
+    border-radius: 50px;
+    background: linear-gradient(90deg, var(--gold), var(--gold2));
+    transition: width 0.2s;
+    box-shadow: 0 0 10px var(--gold);
+  }
+  .progress-info {
+    display: flex; justify-content: space-between;
+    font-size: 0.82rem;
+    color: #9080b0;
+  }
+  .progress-info .clicks-left {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* COLOR RINGS */
+  .rings-wrap {
+    display: flex; justify-content: center; gap: 8px;
+    margin-top: 18px; flex-wrap: wrap;
+  }
+  .ring {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    box-shadow: 0 0 10px 2px currentColor;
+    transition: transform 0.2s;
+    animation: none;
+  }
+  .ring.active { transform: scale(1.25); animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.5} }
+
+  /* TIMER */
+  .timer-bar {
+    margin-top: 16px;
+    font-size: 0.85rem;
+    color: #9080b0;
+    display: none;
+    text-align: center;
+  }
+  .timer-bar .t { color: var(--gold); font-weight: 700; }
+
+  /* PROFILE SECTION */
+  .profile-section {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    border: 1px solid #2a1a4a;
+    margin-bottom: 22px;
+  }
+  .profile-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .profile-avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+  .profile-name {
+    font-size: 1rem; font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .profile-score {
+    font-size: 0.9rem;
+    color: var(--gold);
+  }
+
+  /* DRAMAS SECTION */
+  .dramas-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-bottom: 14px;
+  }
+  .drama-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 14px;
+    border: 1px solid #2a1a4a;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .drama-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px #FFD70022; }
+  .drama-thumb {
+    width: 60px; height: 60px;
+    border-radius: 10px;
+    font-size: 2rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .drama-info h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .drama-info p { font-size: 0.8rem; color: #7060a0; }
+  .drama-badge {
+    margin-left: auto;
+    background: linear-gradient(135deg,var(--gold),var(--gold2));
+    color: #0a0a1a;
+    font-size: 0.72rem; font-weight: 800;
+    padding: 4px 10px; border-radius: 50px;
+    flex-shrink: 0;
+  }
+
+  /* BOTTOM NAV */
   .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 480px;
-    background: rgba(10,10,26,0.97);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(67,97,238,0.2);
-    display: flex;
-    padding: 8px 0 16px;
-    z-index: 200;
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: #0e0e22ee;
+    backdrop-filter: blur(12px);
+    border-top: 1px solid #2a1a4a;
+    display: flex; justify-content: space-around;
+    padding: 10px 0 16px;
+    z-index: 100;
   }
   .nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 0;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
     cursor: pointer;
-    border: none;
-    background: transparent;
-    color: var(--sub);
-    transition: all 0.3s;
-    position: relative;
+    color: #5a4a7a;
+    font-size: 0.72rem; font-weight: 700;
+    transition: color 0.2s;
+    padding: 4px 16px;
   }
   .nav-item.active { color: var(--gold); }
-  .nav-item.active .nav-icon { filter: drop-shadow(0 0 8px rgba(255,215,0,0.6)); }
-  .nav-icon { font-size: 24px; transition: transform 0.2s; }
-  .nav-item:active .nav-icon { transform: scale(0.85); }
-  .nav-label { font-size: 11px; font-weight: 700; }
-  .nav-dot {
-    position: absolute;
-    top: 4px;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--gold);
-    display: none;
-  }
-  .nav-item.active .nav-dot { display: block; }
+  .nav-item span { font-size: 1.4rem; }
 
-  /* Shimmer */
-  @keyframes shimmer {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
+  /* PAGES */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* FLOAT SCORE */
+  .float-score {
+    position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
+    font-size: 1.8rem; font-weight: 900; color: var(--gold);
+    pointer-events: none; z-index: 200;
+    opacity: 0; animation: none;
+  }
+  .float-score.show {
+    animation: floatUp 0.8s ease forwards;
+  }
+  @keyframes floatUp {
+    0% { opacity:1; transform: translateX(-50%) translateY(0) scale(1); }
+    100% { opacity:0; transform: translateX(-50%) translateY(-60px) scale(1.5); }
+  }
+
+  /* SETTINGS PAGE */
+  .settings-row {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: space-between;
+    border: 1px solid #2a1a4a;
+  }
+  .settings-row .label { font-size: 0.95rem; font-weight: 600; }
+  .settings-row .sub { font-size: 0.8rem; color: #7060a0; margin-top: 2px; }
+
+  /* RESPONSIVE */
+  @media(max-width:360px){
+    header h1 { font-size: 2rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header class="header">
-  <div class="logo">
-    <div class="logo-icon">🎬</div>
-    <span><span class="d">Dramlar</span><span class="u">Uz</span></span>
-  </div>
-  <div class="lang-switcher">
-    <button class="lang-btn" onclick="setLang('uz')">UZ</button>
+<div class="stars"></div>
+<div class="float-score" id="floatScore">+1 🌟</div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <h1 id="appTitle">DramlarUz</h1>
+    <p id="appSubtitle">Dramatik seriallar dunyosi</p>
+  </header>
+
+  <!-- LANG SWITCHER -->
+  <div class="lang-bar">
+    <button class="lang-btn active" onclick="setLang('uz')">O'Z</button>
     <button class="lang-btn" onclick="setLang('ru')">RU</button>
     <button class="lang-btn" onclick="setLang('en')">EN</button>
   </div>
-</header>
 
-<!-- BOOST PAGE -->
-<div class="page active" id="page-boost">
-  <div class="boost-header">
-    <h1 id="t-boost-title">BOOST</h1>
-    <p id="t-boost-sub">Har 10 daqiqada 500 ta bosish to'ladi!</p>
-  </div>
+  <!-- PAGE: HOME -->
+  <div class="page active" id="pageHome">
 
-  <div class="progress-container">
-    <div class="progress-top">
-      <span class="progress-label" id="t-energy">Energiya</span>
-      <span class="progress-count"><span id="cur-count">500</span>/500</span>
-    </div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progress-fill" style="width:100%"></div>
-    </div>
-    <div class="refill-timer" id="timer-row" style="display:none">
-      <span id="t-refill">To'lishiga:</span> <span id="refill-time">10:00</span>
-    </div>
-  </div>
+    <!-- BOOSTER -->
+    <div class="booster-section">
+      <h2 id="boosterTitle">🚀 Booster</h2>
+      <div class="sub" id="boosterSub">Tangaga bosing va rang yig'ing!</div>
 
-  <div class="coin-wrapper" id="coin-wrapper">
-    <div class="coin-ring"></div>
-    <div class="coin-ring"></div>
-    <div class="coin-ring"></div>
-    <button class="coin-btn" id="coin-btn" onclick="handleClick(event)">
-      <span class="coin-icon">🪙</span>
-      <span class="coin-text" id="t-tap">TAP!</span>
-    </button>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-icon">👆</div>
-      <div class="stat-num" id="total-taps">0</div>
-      <div class="stat-label" id="t-total">Jami bosish</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">🔥</div>
-      <div class="stat-num" id="session-taps">0</div>
-      <div class="stat-label" id="t-session">Bu sessiyada</div>
-    </div>
-  </div>
-</div>
-
-<!-- PROFILE PAGE -->
-<div class="page" id="page-profile">
-  <div class="profile-hero">
-    <div class="avatar">🎬</div>
-    <div class="profile-name">DramlarUz</div>
-    <div class="profile-sub" id="t-viewer">Tomoshabin</div>
-    <div class="profile-badge" id="t-badge">⭐ AKTIV FOYDALANUVCHI</div>
-  </div>
-
-  <div class="profile-stats">
-    <div class="ps-card">
-      <div class="ps-icon">🪙</div>
-      <div class="ps-num" id="profile-total">0</div>
-      <div class="ps-label" id="t-coins">Coinlar</div>
-    </div>
-    <div class="ps-card">
-      <div class="ps-icon">📺</div>
-      <div class="ps-num">0</div>
-      <div class="ps-label" id="t-watched">Ko'rilgan</div>
-    </div>
-    <div class="ps-card">
-      <div class="ps-icon">❤️</div>
-      <div class="ps-num">0</div>
-      <div class="ps-label" id="t-likes">Yoqtirishlar</div>
-    </div>
-  </div>
-
-  <div class="menu-section">
-    <div class="menu-title" id="t-settings-title">SOZLAMALAR</div>
-    <div class="menu-item">
-      <div class="menu-item-icon" style="background:rgba(67,97,238,0.2)">🌐</div>
-      <div class="menu-item-text">
-        <div class="menu-item-title" id="t-lang-title">Til</div>
-        <div class="menu-item-sub" id="t-lang-cur">O'zbek</div>
+      <div class="coin-wrap">
+        <div class="coin" id="coin" onclick="clickCoin()">🪙</div>
       </div>
-      <span class="menu-arrow">›</span>
-    </div>
-    <div class="menu-item">
-      <div class="menu-item-icon" style="background:rgba(255,215,0,0.1)">🔔</div>
-      <div class="menu-item-text">
-        <div class="menu-item-title" id="t-notif">Bildirishnomalar</div>
-        <div class="menu-item-sub" id="t-notif-sub">Yoqilgan</div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar" style="width:100%"></div>
       </div>
-      <span class="menu-arrow">›</span>
-    </div>
-    <div class="menu-item">
-      <div class="menu-item-icon" style="background:rgba(255,0,110,0.1)">🎭</div>
-      <div class="menu-item-text">
-        <div class="menu-item-title" id="t-drama">Dramalar</div>
-        <div class="menu-item-sub" id="t-drama-sub">1000+ ta drama</div>
+      <div class="progress-info">
+        <span id="clicksLabel">Bosishlar</span>
+        <span class="clicks-left"><span id="clicksLeft">500</span>/500</span>
       </div>
-      <span class="menu-arrow">›</span>
+
+      <!-- COLOR RINGS -->
+      <div class="rings-wrap" id="ringsWrap"></div>
+
+      <!-- TIMER -->
+      <div class="timer-bar" id="timerBar">
+        <span id="timerLabel">Qayta to'ladi:</span> <span class="t" id="timerText">10:00</span>
+      </div>
+    </div>
+
+    <!-- DRAMAS -->
+    <div class="dramas-section">
+      <h2 id="dramasTitle">🎬 Seriallar</h2>
+      <div id="dramaList"></div>
+    </div>
+
+  </div>
+
+  <!-- PAGE: PROFILE -->
+  <div class="page" id="pageProfile">
+    <div class="profile-section" style="margin-top:10px">
+      <div class="profile-avatar">👤</div>
+      <div class="profile-name" id="profileName">Foydalanuvchi</div>
+      <div class="profile-score">⭐ <span id="profileScore">0</span> <span id="profileScoreLabel">ball</span></div>
+    </div>
+
+    <div class="booster-section">
+      <h2 id="profileBoosterTitle">Mening natijam</h2>
+      <div style="font-size:3rem;margin:10px 0">🏆</div>
+      <div style="font-size:1.5rem;font-weight:800;color:var(--gold)" id="profileTotalClicks">0</div>
+      <div style="font-size:0.85rem;color:#9080b0;margin-top:4px" id="profileClicksLabel2">jami bosish</div>
     </div>
   </div>
 
-  <div class="menu-section">
-    <div class="menu-title" id="t-social-title">IJTIMOIY TARMOQLAR</div>
-    <div class="menu-item">
-      <div class="menu-item-icon" style="background:rgba(229,57,53,0.15)">▶️</div>
-      <div class="menu-item-text">
-        <div class="menu-item-title">YouTube</div>
-        <div class="menu-item-sub">@DramlarUz</div>
+  <!-- PAGE: SETTINGS -->
+  <div class="page" id="pageSettings">
+    <div style="padding-top:10px">
+      <div class="settings-row">
+        <div>
+          <div class="label" id="langSettingLabel">Til / Язык / Language</div>
+          <div class="sub" id="langSettingSub">Joriy til</div>
+        </div>
+        <div class="lang-bar" style="margin:0">
+          <button class="lang-btn active" id="sLangUz" onclick="setLang('uz')">O'Z</button>
+          <button class="lang-btn" id="sLangRu" onclick="setLang('ru')">RU</button>
+          <button class="lang-btn" id="sLangEn" onclick="setLang('en')">EN</button>
+        </div>
       </div>
-      <span class="menu-arrow">›</span>
-    </div>
-    <div class="menu-item">
-      <div class="menu-item-icon" style="background:rgba(41,182,246,0.15)">✈️</div>
-      <div class="menu-item-text">
-        <div class="menu-item-title">Telegram</div>
-        <div class="menu-item-sub">@DramlarUz</div>
+      <div class="settings-row">
+        <div>
+          <div class="label" id="aboutLabel">DramlarUz haqida</div>
+          <div class="sub">v1.0.0</div>
+        </div>
+        <span style="font-size:1.4rem">ℹ️</span>
       </div>
-      <span class="menu-arrow">›</span>
-    </div>
-    <div class="menu-item">
-      <div class="menu-item-icon" style="background:rgba(233,30,99,0.15)">📸</div>
-      <div class="menu-item-text">
-        <div class="menu-item-title">Instagram</div>
-        <div class="menu-item-sub">@DramlarUz</div>
-      </div>
-      <span class="menu-arrow">›</span>
     </div>
   </div>
-</div>
+
+</div><!-- /wrap -->
 
 <!-- BOTTOM NAV -->
-<nav class="bottom-nav">
-  <button class="nav-item active" id="nav-boost" onclick="showPage('boost')">
-    <div class="nav-dot"></div>
-    <span class="nav-icon">⚡</span>
-    <span class="nav-label" id="t-nav-boost">Boost</span>
-  </button>
-  <button class="nav-item" id="nav-home" onclick="showPage('home')">
-    <div class="nav-dot"></div>
-    <span class="nav-icon">🏠</span>
-    <span class="nav-label" id="t-nav-home">Bosh sahifa</span>
-  </button>
-  <button class="nav-item" id="nav-profile" onclick="showPage('profile')">
-    <div class="nav-dot"></div>
-    <span class="nav-icon">👤</span>
-    <span class="nav-label" id="t-nav-profile">Profil</span>
-  </button>
-</nav>
+<div class="bottom-nav">
+  <div class="nav-item active" id="navHome" onclick="showPage('Home')">
+    <span>🏠</span>
+    <div id="navHomeLabel">Bosh</div>
+  </div>
+  <div class="nav-item" id="navProfile" onclick="showPage('Profile')">
+    <span>👤</span>
+    <div id="navProfileLabel">Profil</div>
+  </div>
+  <div class="nav-item" id="navSettings" onclick="showPage('Settings')">
+    <span>⚙️</span>
+    <div id="navSettingsLabel">Sozlamalar</div>
+  </div>
+</div>
 
 <script>
 // ===== STATE =====
-const MAX = 500;
-const REFILL_MS = 10 * 60 * 1000; // 10 min
+let clicks = 500;
+let totalClicks = 0;
+let colors = [];
+let timerActive = false;
+let timerInterval = null;
+let timerSeconds = 600; // 10 min
+const MAX_CLICKS = 500;
+const REFILL_TIME = 600;
+const COLORS_ARRAY = [
+  '#FF4466','#FF8800','#FFD700','#44FF88','#00CCFF','#AA44FF','#FF44CC','#44FFFF'
+];
 
-let state = {
-  clicks: MAX,
-  totalTaps: 0,
-  sessionTaps: 0,
-  refillAt: null,
-  lang: 'uz'
-};
-
-// Load from localStorage
-try {
-  const saved = JSON.parse(localStorage.getItem('dramlaruz') || '{}');
-  if (saved.clicks !== undefined) state.clicks = saved.clicks;
-  if (saved.totalTaps !== undefined) state.totalTaps = saved.totalTaps;
-  if (saved.refillAt) state.refillAt = saved.refillAt;
-  if (saved.lang) state.lang = saved.lang;
-} catch(e){}
-
-// ===== LANGUAGES =====
+// ===== TRANSLATIONS =====
 const T = {
   uz: {
-    'boost-title': 'BOOST',
-    'boost-sub': 'Har 10 daqiqada 500 ta bosish to\'ladi!',
-    'energy': 'Energiya',
-    'refill': 'To\'lishiga:',
-    'tap': 'TAP!',
-    'total': 'Jami bosish',
-    'session': 'Bu sessiyada',
-    'viewer': 'Tomoshabin',
-    'badge': '⭐ AKTIV FOYDALANUVCHI',
-    'coins': 'Coinlar',
-    'watched': 'Ko\'rilgan',
-    'likes': 'Yoqtirishlar',
-    'settings-title': 'SOZLAMALAR',
-    'lang-title': 'Til',
-    'lang-cur': 'O\'zbek',
-    'notif': 'Bildirishnomalar',
-    'notif-sub': 'Yoqilgan',
-    'drama': 'Dramalar',
-    'drama-sub': '1000+ ta drama',
-    'social-title': 'IJTIMOIY TARMOQLAR',
-    'nav-boost': 'Boost',
-    'nav-home': 'Bosh sahifa',
-    'nav-profile': 'Profil',
-    'depleted': 'To\'lmoqda...',
+    subtitle: 'Dramatik seriallar dunyosi',
+    boosterTitle: '🚀 Booster',
+    boosterSub: 'Tangaga bosing va rang yig\'ing!',
+    clicksLabel: 'Bosishlar',
+    dramasTitle: '🎬 Seriallar',
+    timerLabel: 'Qayta to\'ladi:',
+    profileName: 'Profil',
+    profileScoreLabel: 'ball',
+    profileClicksLabel2: 'jami bosish',
+    profileBoosterTitle: 'Mening natijam',
+    navHome: 'Bosh',
+    navProfile: 'Profil',
+    navSettings: 'Sozlamalar',
+    langSettingSub: 'Joriy til: O\'zbek',
+    aboutLabel: 'DramlarUz haqida',
+    empty: 'Bosishlar tugadi! Kuting...',
+    dramas: [
+      { title: 'Sevgi va Qismat', genre: '💔 Melodrama', badge: 'Yangi' },
+      { title: 'Ko\'z Yoshlar', genre: '😢 Drama', badge: 'TOP' },
+      { title: 'Qaytish', genre: '🌹 Romantika', badge: 'HD' },
+      { title: 'Taqdir', genre: '⚡ Triller', badge: 'Yangi' },
+    ]
   },
   ru: {
-    'boost-title': 'БУСТ',
-    'boost-sub': 'Каждые 10 минут пополняется 500 нажатий!',
-    'energy': 'Энергия',
-    'refill': 'До пополнения:',
-    'tap': 'ЖМИ!',
-    'total': 'Всего нажатий',
-    'session': 'В этой сессии',
-    'viewer': 'Зритель',
-    'badge': '⭐ АКТИВНЫЙ ПОЛЬЗОВАТЕЛЬ',
-    'coins': 'Монеты',
-    'watched': 'Просмотрено',
-    'likes': 'Лайки',
-    'settings-title': 'НАСТРОЙКИ',
-    'lang-title': 'Язык',
-    'lang-cur': 'Русский',
-    'notif': 'Уведомления',
-    'notif-sub': 'Включено',
-    'drama': 'Дорамы',
-    'drama-sub': '1000+ дорам',
-    'social-title': 'СОЦИАЛЬНЫЕ СЕТИ',
-    'nav-boost': 'Буст',
-    'nav-home': 'Главная',
-    'nav-profile': 'Профиль',
-    'depleted': 'Заряжается...',
+    subtitle: 'Мир драматических сериалов',
+    boosterTitle: '🚀 Бустер',
+    boosterSub: 'Нажмите на монету и собирайте цвета!',
+    clicksLabel: 'Нажатий',
+    dramasTitle: '🎬 Сериалы',
+    timerLabel: 'Пополнится через:',
+    profileName: 'Профиль',
+    profileScoreLabel: 'очков',
+    profileClicksLabel2: 'всего нажатий',
+    profileBoosterTitle: 'Мой результат',
+    navHome: 'Главная',
+    navProfile: 'Профиль',
+    navSettings: 'Настройки',
+    langSettingSub: 'Текущий язык: Русский',
+    aboutLabel: 'О приложении DramlarUz',
+    empty: 'Нажатия закончились! Ждите...',
+    dramas: [
+      { title: 'Любовь и Судьба', genre: '💔 Мелодрама', badge: 'Новый' },
+      { title: 'Слёзы', genre: '😢 Драма', badge: 'ТОП' },
+      { title: 'Возвращение', genre: '🌹 Романтика', badge: 'HD' },
+      { title: 'Судьба', genre: '⚡ Триллер', badge: 'Новый' },
+    ]
   },
   en: {
-    'boost-title': 'BOOST',
-    'boost-sub': 'Refills 500 taps every 10 minutes!',
-    'energy': 'Energy',
-    'refill': 'Refills in:',
-    'tap': 'TAP!',
-    'total': 'Total Taps',
-    'session': 'This Session',
-    'viewer': 'Viewer',
-    'badge': '⭐ ACTIVE USER',
-    'coins': 'Coins',
-    'watched': 'Watched',
-    'likes': 'Likes',
-    'settings-title': 'SETTINGS',
-    'lang-title': 'Language',
-    'lang-cur': 'English',
-    'notif': 'Notifications',
-    'notif-sub': 'Enabled',
-    'drama': 'Dramas',
-    'drama-sub': '1000+ dramas',
-    'social-title': 'SOCIAL NETWORKS',
-    'nav-boost': 'Boost',
-    'nav-home': 'Home',
-    'nav-profile': 'Profile',
-    'depleted': 'Recharging...',
+    subtitle: 'World of Dramatic Series',
+    boosterTitle: '🚀 Booster',
+    boosterSub: 'Tap the coin and collect colors!',
+    clicksLabel: 'Taps',
+    dramasTitle: '🎬 Series',
+    timerLabel: 'Refills in:',
+    profileName: 'Profile',
+    profileScoreLabel: 'points',
+    profileClicksLabel2: 'total taps',
+    profileBoosterTitle: 'My Result',
+    navHome: 'Home',
+    navProfile: 'Profile',
+    navSettings: 'Settings',
+    langSettingSub: 'Current language: English',
+    aboutLabel: 'About DramlarUz',
+    empty: 'Taps depleted! Please wait...',
+    dramas: [
+      { title: 'Love & Fate', genre: '💔 Melodrama', badge: 'New' },
+      { title: 'Tears', genre: '😢 Drama', badge: 'TOP' },
+      { title: 'Return', genre: '🌹 Romance', badge: 'HD' },
+      { title: 'Destiny', genre: '⚡ Thriller', badge: 'New' },
+    ]
   }
 };
 
+let currentLang = 'uz';
+
 function setLang(lang) {
-  state.lang = lang;
-  save();
-  const t = T[lang];
+  currentLang = lang;
+  // Update lang buttons
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.lang-btn:nth-child(${lang==='uz'?1:lang==='ru'?2:3})`).classList.add('active');
-  for (const [key, val] of Object.entries(t)) {
-    const el = document.getElementById('t-' + key);
-    if (el) el.textContent = val;
-  }
-  updateUI();
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    if (b.textContent.toLowerCase().includes(lang === 'uz' ? 'o' : lang === 'ru' ? 'ru' : 'en')) {
+      b.classList.add('active');
+    }
+  });
+  applyTranslations();
 }
 
-// ===== PAGES =====
+function applyTranslations() {
+  const t = T[currentLang];
+  document.getElementById('appSubtitle').textContent = t.subtitle;
+  document.getElementById('boosterTitle').textContent = t.boosterTitle;
+  document.getElementById('boosterSub').textContent = t.boosterSub;
+  document.getElementById('clicksLabel').textContent = t.clicksLabel;
+  document.getElementById('dramasTitle').textContent = t.dramasTitle;
+  document.getElementById('timerLabel').textContent = t.timerLabel;
+  document.getElementById('navHomeLabel').textContent = t.navHome;
+  document.getElementById('navProfileLabel').textContent = t.navProfile;
+  document.getElementById('navSettingsLabel').textContent = t.navSettings;
+  document.getElementById('profileScoreLabel').textContent = t.profileScoreLabel;
+  document.getElementById('profileClicksLabel2').textContent = t.profileClicksLabel2;
+  document.getElementById('profileBoosterTitle').textContent = t.profileBoosterTitle;
+  document.getElementById('langSettingSub').textContent = t.langSettingSub;
+  document.getElementById('aboutLabel').textContent = t.aboutLabel;
+  renderDramas();
+
+  // Settings lang buttons
+  ['sLangUz','sLangRu','sLangEn'].forEach(id => document.getElementById(id)?.classList.remove('active'));
+  const map = {uz:'sLangUz', ru:'sLangRu', en:'sLangEn'};
+  document.getElementById(map[currentLang])?.classList.add('active');
+}
+
+// ===== DRAMA LIST =====
+const EMOJIS = ['🎭','🌹','💔','⚡','🌙','🔥'];
+function renderDramas() {
+  const t = T[currentLang];
+  const list = document.getElementById('dramaList');
+  list.innerHTML = '';
+  t.dramas.forEach((d, i) => {
+    const div = document.createElement('div');
+    div.className = 'drama-card';
+    div.innerHTML = `
+      <div class="drama-thumb" style="background:linear-gradient(135deg,${COLORS_ARRAY[i*2%8]},${COLORS_ARRAY[(i*2+3)%8]})">${EMOJIS[i%6]}</div>
+      <div class="drama-info">
+        <h3>${d.title}</h3>
+        <p>${d.genre}</p>
+      </div>
+      <div class="drama-badge">${d.badge}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// ===== BOOSTER COIN =====
+function clickCoin() {
+  if (clicks <= 0) return;
+  clicks--;
+  totalClicks++;
+
+  // Animate coin
+  const coin = document.getElementById('coin');
+  coin.classList.remove('clicked');
+  void coin.offsetWidth;
+  coin.classList.add('clicked');
+
+  // Add color ring
+  if (colors.length < 8) {
+    const c = COLORS_ARRAY[colors.length];
+    colors.push(c);
+    renderRings();
+  }
+
+  // Update progress
+  updateProgress();
+
+  // Float score
+  showFloat();
+
+  // Profile score
+  document.getElementById('profileScore').textContent = totalClicks;
+  document.getElementById('profileTotalClicks').textContent = totalClicks;
+
+  // If empty, start timer
+  if (clicks <= 0) {
+    startRefillTimer();
+  }
+}
+
+function renderRings() {
+  const wrap = document.getElementById('ringsWrap');
+  wrap.innerHTML = '';
+  for (let i = 0; i < 8; i++) {
+    const r = document.createElement('div');
+    r.className = 'ring' + (i < colors.length ? ' active' : '');
+    r.style.background = i < colors.length ? colors[i] : '#2a1a4a';
+    r.style.color = i < colors.length ? colors[i] : 'transparent';
+    if (i < colors.length) {
+      r.style.borderColor = colors[i];
+    } else {
+      r.style.borderColor = '#2a1a4a';
+      r.style.boxShadow = 'none';
+    }
+    wrap.appendChild(r);
+  }
+}
+
+function updateProgress() {
+  const pct = (clicks / MAX_CLICKS) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('clicksLeft').textContent = clicks;
+}
+
+function showFloat() {
+  const el = document.getElementById('floatScore');
+  el.classList.remove('show');
+  void el.offsetWidth;
+  el.textContent = '+1 🌟';
+  el.classList.add('show');
+}
+
+function startRefillTimer() {
+  if (timerActive) return;
+  timerActive = true;
+  timerSeconds = REFILL_TIME;
+  document.getElementById('timerBar').style.display = 'block';
+  timerInterval = setInterval(() => {
+    timerSeconds--;
+    const m = Math.floor(timerSeconds / 60).toString().padStart(2,'0');
+    const s = (timerSeconds % 60).toString().padStart(2,'0');
+    document.getElementById('timerText').textContent = m + ':' + s;
+    if (timerSeconds <= 0) {
+      clearInterval(timerInterval);
+      timerActive = false;
+      clicks = MAX_CLICKS;
+      colors = [];
+      renderRings();
+      updateProgress();
+      document.getElementById('timerBar').style.display = 'none';
+    }
+  }, 1000);
+}
+
+// ===== NAVIGATION =====
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const p = document.getElementById('page-' + name);
-  const n = document.getElementById('nav-' + name);
-  if (p) p.classList.add('active');
-  if (n) n.classList.add('active');
-  if (name === 'profile') {
-    document.getElementById('profile-total').textContent = state.totalTaps;
-  }
+  document.getElementById('nav' + name).classList.add('active');
 }
-
-// ===== BOOST LOGIC =====
-function handleClick(e) {
-  if (state.clicks <= 0) return;
-  
-  state.clicks--;
-  state.totalTaps++;
-  state.sessionTaps++;
-
-  if (state.clicks === 0 && !state.refillAt) {
-    state.refillAt = Date.now() + REFILL_MS;
-  }
-
-  // Floating number
-  const wrapper = document.getElementById('coin-wrapper');
-  const rect = wrapper.getBoundingClientRect();
-  const el = document.createElement('div');
-  el.className = 'float-score';
-  el.textContent = '+1';
-  el.style.left = (e.clientX - rect.left - 15) + 'px';
-  el.style.top = (e.clientY - rect.top - 30) + 'px';
-  wrapper.style.position = 'relative';
-  wrapper.appendChild(el);
-  setTimeout(() => el.remove(), 800);
-
-  save();
-  updateUI();
-}
-
-function updateUI() {
-  const pct = (state.clicks / MAX) * 100;
-  document.getElementById('cur-count').textContent = state.clicks;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('total-taps').textContent = state.totalTaps;
-  document.getElementById('session-taps').textContent = state.sessionTaps;
-
-  const btn = document.getElementById('coin-btn');
-  const tapText = document.getElementById('t-tap');
-  const timerRow = document.getElementById('timer-row');
-
-  if (state.clicks <= 0) {
-    btn.classList.add('depleted');
-    tapText.textContent = T[state.lang]['depleted'];
-    timerRow.style.display = 'block';
-  } else {
-    btn.classList.remove('depleted');
-    tapText.textContent = T[state.lang]['tap'];
-    timerRow.style.display = 'none';
-  }
-}
-
-function save() {
-  localStorage.setItem('dramlaruz', JSON.stringify({
-    clicks: state.clicks,
-    totalTaps: state.totalTaps,
-    refillAt: state.refillAt,
-    lang: state.lang
-  }));
-}
-
-// ===== TIMER =====
-setInterval(() => {
-  if (state.refillAt && state.clicks === 0) {
-    const remaining = state.refillAt - Date.now();
-    if (remaining <= 0) {
-      state.clicks = MAX;
-      state.refillAt = null;
-      save();
-      updateUI();
-    } else {
-      const m = Math.floor(remaining / 60000);
-      const s = Math.floor((remaining % 60000) / 1000);
-      document.getElementById('refill-time').textContent =
-        String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-    }
-  }
-}, 500);
 
 // ===== INIT =====
-setLang(state.lang);
-updateUI();
+renderRings();
+applyTranslations();
 </script>
 </body>
 </html>
