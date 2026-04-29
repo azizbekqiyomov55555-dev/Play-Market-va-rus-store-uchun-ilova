@@ -3,19 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DramlarUz — Dramatik seriallar platformasi</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<title>DramlarUz</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold: #FFD700;
-    --gold2: #FFA500;
-    --dark: #0a0a1a;
-    --card: #12122a;
-    --accent: #e040fb;
-    --text: #f0e6ff;
-    --radius: 18px;
+    --gold2: #FFC200;
+    --dark: #0d0d1a;
+    --dark2: #161628;
+    --card: #1e1e36;
+    --accent: #a259ff;
+    --accent2: #7c3aed;
+    --text: #f0f0ff;
+    --sub: #9999bb;
+    --red: #ff4d6d;
+    --green: #00e676;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
     background: var(--dark);
     color: var(--text);
@@ -24,667 +30,1042 @@
     overflow-x: hidden;
   }
 
-  /* STARS background */
-  .stars {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    background: radial-gradient(ellipse at 20% 30%, #1a0033 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 70%, #001a33 0%, transparent 60%),
-                var(--dark);
-  }
-  .stars::after {
-    content:''; position:absolute; inset:0;
-    background-image:
-      radial-gradient(1px 1px at 10% 20%, #fff8 0%, transparent 100%),
-      radial-gradient(1px 1px at 30% 60%, #fff6 0%, transparent 100%),
-      radial-gradient(1px 1px at 60% 10%, #fff8 0%, transparent 100%),
-      radial-gradient(1px 1px at 80% 40%, #fff5 0%, transparent 100%),
-      radial-gradient(1px 1px at 50% 80%, #fff7 0%, transparent 100%),
-      radial-gradient(1px 1px at 90% 90%, #fff6 0%, transparent 100%);
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 20% 90%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 15%, rgba(255,255,255,0.5) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
   }
 
-  /* LAYOUT */
-  .wrap { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding: 0 16px 60px; }
-
-  /* HEADER */
-  header {
-    text-align: center;
-    padding: 40px 0 20px;
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,13,26,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(162,89,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
   }
-  header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 2.6rem;
+
+  .logo {
+    font-size: 22px;
     font-weight: 900;
-    background: linear-gradient(135deg, var(--gold), var(--gold2), var(--accent));
+    background: linear-gradient(90deg, var(--gold), var(--accent));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -1px;
-    line-height: 1.1;
-  }
-  header p {
-    margin-top: 8px;
-    color: #b0a0cc;
-    font-size: 0.95rem;
+    letter-spacing: 1px;
   }
 
-  /* LANG SWITCHER */
-  .lang-bar {
-    display: flex; justify-content: center; gap: 10px;
-    margin: 18px 0 30px;
+  .lang-switcher {
+    display: flex;
+    gap: 6px;
   }
+
   .lang-btn {
-    padding: 7px 20px;
-    border-radius: 50px;
-    border: 2px solid #3a2a5a;
-    background: transparent;
-    color: #b0a0cc;
+    background: var(--card);
+    border: 1px solid rgba(162,89,255,0.3);
+    color: var(--sub);
     font-family: 'Nunito', sans-serif;
+    font-size: 12px;
     font-weight: 700;
-    font-size: 0.9rem;
+    padding: 5px 10px;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.2s;
   }
+
   .lang-btn.active, .lang-btn:hover {
-    background: linear-gradient(135deg, var(--gold), var(--gold2));
-    color: #0a0a1a;
-    border-color: var(--gold);
-  }
-
-  /* BOOSTER COIN */
-  .booster-section {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 28px 20px 24px;
-    text-align: center;
-    border: 1px solid #2a1a4a;
-    margin-bottom: 22px;
-    box-shadow: 0 8px 40px #FFD70022;
-  }
-  .booster-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-  .booster-section .sub {
-    font-size: 0.85rem;
-    color: #9080b0;
-    margin-bottom: 20px;
-  }
-
-  /* COIN */
-  .coin-wrap {
-    display: flex; justify-content: center; align-items: center;
-    margin-bottom: 20px;
-  }
-  .coin {
-    width: 110px; height: 110px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #ffe566, #ffa500 60%, #cc7700);
-    border: 5px solid #FFD700;
-    box-shadow: 0 0 0 4px #ffd70033, 0 8px 32px #FFD70055, inset 0 -4px 12px #cc770066;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 3rem;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.08s, box-shadow 0.08s;
-    position: relative;
-    animation: floatCoin 3s ease-in-out infinite;
-  }
-  .coin:active { transform: scale(0.91); box-shadow: 0 2px 10px #FFD70044; }
-  @keyframes floatCoin {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-  }
-  .coin.clicked { animation: popCoin 0.15s ease; }
-  @keyframes popCoin {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.18); }
-    100% { transform: scale(1); }
-  }
-
-  /* PROGRESS BAR */
-  .progress-wrap {
-    background: #1e1a38;
-    border-radius: 50px;
-    height: 16px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    border: 1px solid #3a2a6a;
-  }
-  .progress-bar {
-    height: 100%;
-    border-radius: 50px;
-    background: linear-gradient(90deg, var(--gold), var(--gold2));
-    transition: width 0.2s;
-    box-shadow: 0 0 10px var(--gold);
-  }
-  .progress-info {
-    display: flex; justify-content: space-between;
-    font-size: 0.82rem;
-    color: #9080b0;
-  }
-  .progress-info .clicks-left {
-    color: var(--gold);
-    font-weight: 700;
-  }
-
-  /* COLOR RINGS */
-  .rings-wrap {
-    display: flex; justify-content: center; gap: 8px;
-    margin-top: 18px; flex-wrap: wrap;
-  }
-  .ring {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    box-shadow: 0 0 10px 2px currentColor;
-    transition: transform 0.2s;
-    animation: none;
-  }
-  .ring.active { transform: scale(1.25); animation: pulse 1s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.5} }
-
-  /* TIMER */
-  .timer-bar {
-    margin-top: 16px;
-    font-size: 0.85rem;
-    color: #9080b0;
-    display: none;
-    text-align: center;
-  }
-  .timer-bar .t { color: var(--gold); font-weight: 700; }
-
-  /* PROFILE SECTION */
-  .profile-section {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 22px 20px;
-    border: 1px solid #2a1a4a;
-    margin-bottom: 22px;
-  }
-  .profile-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: var(--accent);
-    margin-bottom: 14px;
-  }
-  .profile-avatar {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--gold));
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem;
-    margin-bottom: 12px;
-  }
-  .profile-name {
-    font-size: 1rem; font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .profile-score {
-    font-size: 0.9rem;
-    color: var(--gold);
-  }
-
-  /* DRAMAS SECTION */
-  .dramas-section h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.3rem;
-    color: var(--text);
-    margin-bottom: 14px;
-  }
-  .drama-card {
-    background: var(--card);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 14px;
-    display: flex; align-items: center; gap: 14px;
-    border: 1px solid #2a1a4a;
-    cursor: pointer;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .drama-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px #FFD70022; }
-  .drama-thumb {
-    width: 60px; height: 60px;
-    border-radius: 10px;
-    font-size: 2rem;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .drama-info h3 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-  .drama-info p { font-size: 0.8rem; color: #7060a0; }
-  .drama-badge {
-    margin-left: auto;
-    background: linear-gradient(135deg,var(--gold),var(--gold2));
-    color: #0a0a1a;
-    font-size: 0.72rem; font-weight: 800;
-    padding: 4px 10px; border-radius: 50px;
-    flex-shrink: 0;
+    background: var(--accent2);
+    color: white;
+    border-color: var(--accent);
   }
 
   /* BOTTOM NAV */
   .bottom-nav {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: #0e0e22ee;
-    backdrop-filter: blur(12px);
-    border-top: 1px solid #2a1a4a;
-    display: flex; justify-content: space-around;
-    padding: 10px 0 16px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     z-index: 100;
+    background: rgba(13,13,26,0.95);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(162,89,255,0.2);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0 16px;
   }
+
   .nav-item {
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
     cursor: pointer;
-    color: #5a4a7a;
-    font-size: 0.72rem; font-weight: 700;
-    transition: color 0.2s;
-    padding: 4px 16px;
+    opacity: 0.5;
+    transition: all 0.2s;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--sub);
+    background: none;
+    border: none;
+    padding: 0 16px;
   }
-  .nav-item.active { color: var(--gold); }
-  .nav-item span { font-size: 1.4rem; }
+
+  .nav-item.active {
+    opacity: 1;
+    color: var(--gold);
+  }
+
+  .nav-item .icon {
+    font-size: 22px;
+  }
 
   /* PAGES */
-  .page { display: none; }
+  .page { display: none; padding: 16px 16px 90px; }
   .page.active { display: block; }
 
-  /* FLOAT SCORE */
-  .float-score {
-    position: fixed; top: 60px; left: 50%; transform: translateX(-50%);
-    font-size: 1.8rem; font-weight: 900; color: var(--gold);
-    pointer-events: none; z-index: 200;
-    opacity: 0; animation: none;
-  }
-  .float-score.show {
-    animation: floatUp 0.8s ease forwards;
-  }
-  @keyframes floatUp {
-    0% { opacity:1; transform: translateX(-50%) translateY(0) scale(1); }
-    100% { opacity:0; transform: translateX(-50%) translateY(-60px) scale(1.5); }
+  /* HOME PAGE */
+  .hero {
+    text-align: center;
+    padding: 30px 0 20px;
   }
 
-  /* SETTINGS PAGE */
-  .settings-row {
+  .hero h1 {
+    font-size: 32px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .hero p {
+    color: var(--sub);
+    font-size: 14px;
+  }
+
+  /* DRAMA CARDS */
+  .drama-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .drama-card {
     background: var(--card);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-    margin-bottom: 12px;
-    display: flex; align-items: center; justify-content: space-between;
-    border: 1px solid #2a1a4a;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(162,89,255,0.15);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
   }
-  .settings-row .label { font-size: 0.95rem; font-weight: 600; }
-  .settings-row .sub { font-size: 0.8rem; color: #7060a0; margin-top: 2px; }
 
-  /* RESPONSIVE */
-  @media(max-width:360px){
-    header h1 { font-size: 2rem; }
+  .drama-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(162,89,255,0.2); }
+
+  .drama-thumb {
+    width: 100%;
+    height: 130px;
+    object-fit: cover;
+    background: linear-gradient(135deg, #2a1a4e, #1a1a3e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
+
+  .drama-info {
+    padding: 10px;
+  }
+
+  .drama-title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .drama-meta {
+    font-size: 11px;
+    color: var(--sub);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .drama-badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--red);
+    color: white;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 8px;
+  }
+
+  .drama-badge.new { background: var(--green); color: #000; }
+
+  /* COIN PAGE */
+  .coin-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+  }
+
+  .coin-balance {
+    background: var(--card);
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 20px;
+    padding: 16px 30px;
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+
+  .coin-balance .label {
+    font-size: 13px;
+    color: var(--sub);
+    margin-bottom: 4px;
+  }
+
+  .coin-balance .amount {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  /* THE COIN */
+  .coin-wrap {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+  }
+
+  .coin {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffe066, #e6a800, #7a5500);
+    box-shadow: 
+      0 0 0 6px #b8860b,
+      0 0 40px rgba(255,215,0,0.5),
+      0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.08s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .coin::before {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 20%;
+    width: 30%;
+    height: 20%;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    transform: rotate(-30deg);
+  }
+
+  .coin:active { transform: scale(0.93); }
+
+  .coin-inner {
+    font-size: 70px;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .coin-rings {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(255,215,0,0.4);
+    animation: ring-pulse 2s ease-out infinite;
+    opacity: 0;
+  }
+
+  .ring:nth-child(2) { animation-delay: 0.5s; }
+  .ring:nth-child(3) { animation-delay: 1s; }
+
+  @keyframes ring-pulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+
+  /* Tap floating text */
+  .tap-float {
+    position: absolute;
+    font-weight: 900;
+    font-size: 20px;
+    color: var(--gold);
+    pointer-events: none;
+    animation: float-up 0.8s ease-out forwards;
+    text-shadow: 0 0 10px rgba(255,215,0,0.8);
+  }
+
+  @keyframes float-up {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(1.3); }
+  }
+
+  /* Progress bar */
+  .energy-bar-wrap {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 16px;
+  }
+
+  .energy-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--sub);
+    margin-bottom: 6px;
+  }
+
+  .energy-bar {
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .energy-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold2), var(--gold));
+    border-radius: 10px;
+    transition: width 0.3s;
+  }
+
+  .refill-text {
+    text-align: center;
+    font-size: 12px;
+    color: var(--sub);
+    margin-top: 6px;
+  }
+
+  .refill-text span {
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* BOOSTS */
+  .boosts-section {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .boosts-section h3 {
+    font-size: 14px;
+    color: var(--sub);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .boost-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .boost-card {
+    background: var(--card);
+    border: 1px solid rgba(162,89,255,0.2);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .boost-card:hover {
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(162,89,255,0.15);
+  }
+
+  .boost-icon { font-size: 28px; }
+
+  .boost-info .name {
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .boost-info .cost {
+    font-size: 12px;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  /* PROFILE PAGE */
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    border: 3px solid var(--gold);
+    box-shadow: 0 0 20px rgba(255,215,0,0.3);
+  }
+
+  .profile-name {
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  .profile-coins {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 16px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 8px;
+    width: 100%;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 14px 8px;
+    text-align: center;
+    border: 1px solid rgba(162,89,255,0.15);
+  }
+
+  .stat-card .val {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--gold);
+  }
+
+  .stat-card .lbl {
+    font-size: 10px;
+    color: var(--sub);
+    margin-top: 3px;
+  }
+
+  .profile-section {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .profile-section h3 {
+    font-size: 13px;
+    color: var(--sub);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .profile-row {
+    background: var(--card);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    border: 1px solid rgba(162,89,255,0.1);
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .profile-row:hover { background: #252545; }
+
+  .profile-row .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .profile-row .icon { font-size: 18px; }
+  .profile-row .arrow { color: var(--sub); font-size: 18px; }
+
+  /* Section title */
+  .section-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(162,89,255,0.2);
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: rgba(30,30,54,0.95);
+    border: 1px solid var(--accent);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    z-index: 999;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 </style>
 </head>
 <body>
 
-<div class="stars"></div>
-<div class="float-score" id="floatScore">+1 🌟</div>
-
-<div class="wrap">
-
-  <!-- HEADER -->
-  <header>
-    <h1 id="appTitle">DramlarUz</h1>
-    <p id="appSubtitle">Dramatik seriallar dunyosi</p>
-  </header>
-
-  <!-- LANG SWITCHER -->
-  <div class="lang-bar">
-    <button class="lang-btn active" onclick="setLang('uz')">O'Z</button>
+<!-- NAV -->
+<nav>
+  <div class="logo">🎬 DramlarUz</div>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('uz')">UZ</button>
     <button class="lang-btn" onclick="setLang('ru')">RU</button>
     <button class="lang-btn" onclick="setLang('en')">EN</button>
   </div>
+</nav>
 
-  <!-- PAGE: HOME -->
-  <div class="page active" id="pageHome">
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
-    <!-- BOOSTER -->
-    <div class="booster-section">
-      <h2 id="boosterTitle">🚀 Booster</h2>
-      <div class="sub" id="boosterSub">Tangaga bosing va rang yig'ing!</div>
+<!-- PAGES -->
 
-      <div class="coin-wrap">
-        <div class="coin" id="coin" onclick="clickCoin()">🪙</div>
-      </div>
-
-      <div class="progress-wrap">
-        <div class="progress-bar" id="progressBar" style="width:100%"></div>
-      </div>
-      <div class="progress-info">
-        <span id="clicksLabel">Bosishlar</span>
-        <span class="clicks-left"><span id="clicksLeft">500</span>/500</span>
-      </div>
-
-      <!-- COLOR RINGS -->
-      <div class="rings-wrap" id="ringsWrap"></div>
-
-      <!-- TIMER -->
-      <div class="timer-bar" id="timerBar">
-        <span id="timerLabel">Qayta to'ladi:</span> <span class="t" id="timerText">10:00</span>
-      </div>
-    </div>
-
-    <!-- DRAMAS -->
-    <div class="dramas-section">
-      <h2 id="dramasTitle">🎬 Seriallar</h2>
-      <div id="dramaList"></div>
-    </div>
-
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1 data-i18n="hero_title">DramlarUz</h1>
+    <p data-i18n="hero_sub">Eng yaxshi dramalar — siz uchun!</p>
   </div>
 
-  <!-- PAGE: PROFILE -->
-  <div class="page" id="pageProfile">
-    <div class="profile-section" style="margin-top:10px">
-      <div class="profile-avatar">👤</div>
-      <div class="profile-name" id="profileName">Foydalanuvchi</div>
-      <div class="profile-score">⭐ <span id="profileScore">0</span> <span id="profileScoreLabel">ball</span></div>
-    </div>
-
-    <div class="booster-section">
-      <h2 id="profileBoosterTitle">Mening natijam</h2>
-      <div style="font-size:3rem;margin:10px 0">🏆</div>
-      <div style="font-size:1.5rem;font-weight:800;color:var(--gold)" id="profileTotalClicks">0</div>
-      <div style="font-size:0.85rem;color:#9080b0;margin-top:4px" id="profileClicksLabel2">jami bosish</div>
-    </div>
-  </div>
-
-  <!-- PAGE: SETTINGS -->
-  <div class="page" id="pageSettings">
-    <div style="padding-top:10px">
-      <div class="settings-row">
-        <div>
-          <div class="label" id="langSettingLabel">Til / Язык / Language</div>
-          <div class="sub" id="langSettingSub">Joriy til</div>
-        </div>
-        <div class="lang-bar" style="margin:0">
-          <button class="lang-btn active" id="sLangUz" onclick="setLang('uz')">O'Z</button>
-          <button class="lang-btn" id="sLangRu" onclick="setLang('ru')">RU</button>
-          <button class="lang-btn" id="sLangEn" onclick="setLang('en')">EN</button>
+  <div class="section-title" data-i18n="popular">🔥 Mashhur</div>
+  <div class="drama-grid">
+    <div class="drama-card">
+      <div class="drama-thumb">🌸</div>
+      <div class="drama-badge new" data-i18n="badge_new">YANGI</div>
+      <div class="drama-info">
+        <div class="drama-title" data-i18n="d1_title">Sevgining Rangi</div>
+        <div class="drama-meta">
+          <span>⭐ 4.9</span>
+          <span data-i18n="ep">16 qism</span>
         </div>
       </div>
-      <div class="settings-row">
-        <div>
-          <div class="label" id="aboutLabel">DramlarUz haqida</div>
-          <div class="sub">v1.0.0</div>
+    </div>
+    <div class="drama-card">
+      <div class="drama-thumb">🏯</div>
+      <div class="drama-badge">HOT</div>
+      <div class="drama-info">
+        <div class="drama-title" data-i18n="d2_title">Qasr Sirlari</div>
+        <div class="drama-meta">
+          <span>⭐ 4.7</span>
+          <span data-i18n="ep2">24 qism</span>
         </div>
-        <span style="font-size:1.4rem">ℹ️</span>
       </div>
     </div>
-  </div>
-
-</div><!-- /wrap -->
-
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-  <div class="nav-item active" id="navHome" onclick="showPage('Home')">
-    <span>🏠</span>
-    <div id="navHomeLabel">Bosh</div>
-  </div>
-  <div class="nav-item" id="navProfile" onclick="showPage('Profile')">
-    <span>👤</span>
-    <div id="navProfileLabel">Profil</div>
-  </div>
-  <div class="nav-item" id="navSettings" onclick="showPage('Settings')">
-    <span>⚙️</span>
-    <div id="navSettingsLabel">Sozlamalar</div>
+    <div class="drama-card">
+      <div class="drama-thumb">🌊</div>
+      <div class="drama-info">
+        <div class="drama-title" data-i18n="d3_title">To'lqinlar Osha</div>
+        <div class="drama-meta">
+          <span>⭐ 4.8</span>
+          <span data-i18n="ep3">20 qism</span>
+        </div>
+      </div>
+    </div>
+    <div class="drama-card">
+      <div class="drama-thumb">🌙</div>
+      <div class="drama-badge new" data-i18n="badge_new">YANGI</div>
+      <div class="drama-info">
+        <div class="drama-title" data-i18n="d4_title">Tun Yulduzlari</div>
+        <div class="drama-meta">
+          <span>⭐ 5.0</span>
+          <span data-i18n="ep4">12 qism</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<script>
-// ===== STATE =====
-let clicks = 500;
-let totalClicks = 0;
-let colors = [];
-let timerActive = false;
-let timerInterval = null;
-let timerSeconds = 600; // 10 min
-const MAX_CLICKS = 500;
-const REFILL_TIME = 600;
-const COLORS_ARRAY = [
-  '#FF4466','#FF8800','#FFD700','#44FF88','#00CCFF','#AA44FF','#FF44CC','#44FFFF'
-];
+<!-- COIN TAP -->
+<div class="page" id="page-coin">
+  <div class="coin-page">
+    <div class="coin-balance">
+      <div class="label" data-i18n="balance">Sizning tangalaringiz</div>
+      <div class="amount">🪙 <span id="coin-count">0</span></div>
+    </div>
 
-// ===== TRANSLATIONS =====
-const T = {
-  uz: {
-    subtitle: 'Dramatik seriallar dunyosi',
-    boosterTitle: '🚀 Booster',
-    boosterSub: 'Tangaga bosing va rang yig\'ing!',
-    clicksLabel: 'Bosishlar',
-    dramasTitle: '🎬 Seriallar',
-    timerLabel: 'Qayta to\'ladi:',
-    profileName: 'Profil',
-    profileScoreLabel: 'ball',
-    profileClicksLabel2: 'jami bosish',
-    profileBoosterTitle: 'Mening natijam',
-    navHome: 'Bosh',
-    navProfile: 'Profil',
-    navSettings: 'Sozlamalar',
-    langSettingSub: 'Joriy til: O\'zbek',
-    aboutLabel: 'DramlarUz haqida',
-    empty: 'Bosishlar tugadi! Kuting...',
-    dramas: [
-      { title: 'Sevgi va Qismat', genre: '💔 Melodrama', badge: 'Yangi' },
-      { title: 'Ko\'z Yoshlar', genre: '😢 Drama', badge: 'TOP' },
-      { title: 'Qaytish', genre: '🌹 Romantika', badge: 'HD' },
-      { title: 'Taqdir', genre: '⚡ Triller', badge: 'Yangi' },
-    ]
-  },
-  ru: {
-    subtitle: 'Мир драматических сериалов',
-    boosterTitle: '🚀 Бустер',
-    boosterSub: 'Нажмите на монету и собирайте цвета!',
-    clicksLabel: 'Нажатий',
-    dramasTitle: '🎬 Сериалы',
-    timerLabel: 'Пополнится через:',
-    profileName: 'Профиль',
-    profileScoreLabel: 'очков',
-    profileClicksLabel2: 'всего нажатий',
-    profileBoosterTitle: 'Мой результат',
-    navHome: 'Главная',
-    navProfile: 'Профиль',
-    navSettings: 'Настройки',
-    langSettingSub: 'Текущий язык: Русский',
-    aboutLabel: 'О приложении DramlarUz',
-    empty: 'Нажатия закончились! Ждите...',
-    dramas: [
-      { title: 'Любовь и Судьба', genre: '💔 Мелодрама', badge: 'Новый' },
-      { title: 'Слёзы', genre: '😢 Драма', badge: 'ТОП' },
-      { title: 'Возвращение', genre: '🌹 Романтика', badge: 'HD' },
-      { title: 'Судьба', genre: '⚡ Триллер', badge: 'Новый' },
-    ]
-  },
-  en: {
-    subtitle: 'World of Dramatic Series',
-    boosterTitle: '🚀 Booster',
-    boosterSub: 'Tap the coin and collect colors!',
-    clicksLabel: 'Taps',
-    dramasTitle: '🎬 Series',
-    timerLabel: 'Refills in:',
-    profileName: 'Profile',
-    profileScoreLabel: 'points',
-    profileClicksLabel2: 'total taps',
-    profileBoosterTitle: 'My Result',
-    navHome: 'Home',
-    navProfile: 'Profile',
-    navSettings: 'Settings',
-    langSettingSub: 'Current language: English',
-    aboutLabel: 'About DramlarUz',
-    empty: 'Taps depleted! Please wait...',
-    dramas: [
-      { title: 'Love & Fate', genre: '💔 Melodrama', badge: 'New' },
-      { title: 'Tears', genre: '😢 Drama', badge: 'TOP' },
-      { title: 'Return', genre: '🌹 Romance', badge: 'HD' },
-      { title: 'Destiny', genre: '⚡ Thriller', badge: 'New' },
-    ]
-  }
-};
-
-let currentLang = 'uz';
-
-function setLang(lang) {
-  currentLang = lang;
-  // Update lang buttons
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.lang-btn').forEach(b => {
-    if (b.textContent.toLowerCase().includes(lang === 'uz' ? 'o' : lang === 'ru' ? 'ru' : 'en')) {
-      b.classList.add('active');
-    }
-  });
-  applyTranslations();
-}
-
-function applyTranslations() {
-  const t = T[currentLang];
-  document.getElementById('appSubtitle').textContent = t.subtitle;
-  document.getElementById('boosterTitle').textContent = t.boosterTitle;
-  document.getElementById('boosterSub').textContent = t.boosterSub;
-  document.getElementById('clicksLabel').textContent = t.clicksLabel;
-  document.getElementById('dramasTitle').textContent = t.dramasTitle;
-  document.getElementById('timerLabel').textContent = t.timerLabel;
-  document.getElementById('navHomeLabel').textContent = t.navHome;
-  document.getElementById('navProfileLabel').textContent = t.navProfile;
-  document.getElementById('navSettingsLabel').textContent = t.navSettings;
-  document.getElementById('profileScoreLabel').textContent = t.profileScoreLabel;
-  document.getElementById('profileClicksLabel2').textContent = t.profileClicksLabel2;
-  document.getElementById('profileBoosterTitle').textContent = t.profileBoosterTitle;
-  document.getElementById('langSettingSub').textContent = t.langSettingSub;
-  document.getElementById('aboutLabel').textContent = t.aboutLabel;
-  renderDramas();
-
-  // Settings lang buttons
-  ['sLangUz','sLangRu','sLangEn'].forEach(id => document.getElementById(id)?.classList.remove('active'));
-  const map = {uz:'sLangUz', ru:'sLangRu', en:'sLangEn'};
-  document.getElementById(map[currentLang])?.classList.add('active');
-}
-
-// ===== DRAMA LIST =====
-const EMOJIS = ['🎭','🌹','💔','⚡','🌙','🔥'];
-function renderDramas() {
-  const t = T[currentLang];
-  const list = document.getElementById('dramaList');
-  list.innerHTML = '';
-  t.dramas.forEach((d, i) => {
-    const div = document.createElement('div');
-    div.className = 'drama-card';
-    div.innerHTML = `
-      <div class="drama-thumb" style="background:linear-gradient(135deg,${COLORS_ARRAY[i*2%8]},${COLORS_ARRAY[(i*2+3)%8]})">${EMOJIS[i%6]}</div>
-      <div class="drama-info">
-        <h3>${d.title}</h3>
-        <p>${d.genre}</p>
+    <div class="coin-wrap" id="coin-wrap">
+      <div class="coin" id="coin" onclick="tapCoin(event)">
+        <div class="coin-inner">🪙</div>
       </div>
-      <div class="drama-badge">${d.badge}</div>
-    `;
-    list.appendChild(div);
-  });
-}
+      <div class="coin-rings">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+    </div>
 
-// ===== BOOSTER COIN =====
-function clickCoin() {
-  if (clicks <= 0) return;
-  clicks--;
-  totalClicks++;
+    <div class="energy-bar-wrap">
+      <div class="energy-label">
+        <span data-i18n="energy">⚡ Energiya</span>
+        <span><span id="energy-cur">500</span> / 500</span>
+      </div>
+      <div class="energy-bar">
+        <div class="energy-fill" id="energy-fill" style="width:100%"></div>
+      </div>
+      <div class="refill-text" id="refill-text"></div>
+    </div>
 
-  // Animate coin
-  const coin = document.getElementById('coin');
-  coin.classList.remove('clicked');
-  void coin.offsetWidth;
-  coin.classList.add('clicked');
+    <div class="boosts-section">
+      <h3 data-i18n="boosts">🚀 Boosterlar</h3>
+      <div class="boost-grid">
+        <div class="boost-card" onclick="activateBoost('x2')">
+          <div class="boost-icon">⚡</div>
+          <div class="boost-info">
+            <div class="name" data-i18n="boost1">x2 Tanga</div>
+            <div class="cost">🪙 500</div>
+          </div>
+        </div>
+        <div class="boost-card" onclick="activateBoost('refill')">
+          <div class="boost-icon">🔋</div>
+          <div class="boost-info">
+            <div class="name" data-i18n="boost2">To'ldirish</div>
+            <div class="cost">🪙 200</div>
+          </div>
+        </div>
+        <div class="boost-card" onclick="activateBoost('x5')">
+          <div class="boost-icon">💥</div>
+          <div class="boost-info">
+            <div class="name" data-i18n="boost3">x5 Super</div>
+            <div class="cost">🪙 1500</div>
+          </div>
+        </div>
+        <div class="boost-card" onclick="activateBoost('auto')">
+          <div class="boost-icon">🤖</div>
+          <div class="boost-info">
+            <div class="name" data-i18n="boost4">Avto-tap</div>
+            <div class="cost">🪙 1000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-  // Add color ring
-  if (colors.length < 8) {
-    const c = COLORS_ARRAY[colors.length];
-    colors.push(c);
-    renderRings();
+<!-- PROFILE -->
+<div class="page" id="page-profile">
+  <div class="profile-header">
+    <div class="avatar">👤</div>
+    <div class="profile-name" data-i18n="user_name">Foydalanuvchi</div>
+    <div class="profile-coins">🪙 <span id="profile-coins">0</span> <span data-i18n="coins">tanga</span></div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="val" id="stat-taps">0</div>
+      <div class="lbl" data-i18n="total_taps">Jami bosish</div>
+    </div>
+    <div class="stat-card">
+      <div class="val">12</div>
+      <div class="lbl" data-i18n="watched">Ko'rildi</div>
+    </div>
+    <div class="stat-card">
+      <div class="val">3</div>
+      <div class="lbl" data-i18n="saved">Saqlandi</div>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3 data-i18n="settings">⚙️ Sozlamalar</h3>
+    <div class="profile-row">
+      <div class="left"><span class="icon">🌐</span><span data-i18n="language">Til</span></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span id="current-lang-label" style="color:var(--gold);font-weight:700;font-size:13px">O'zbek</span>
+        <span class="arrow">›</span>
+      </div>
+    </div>
+    <div class="profile-row">
+      <div class="left"><span class="icon">🔔</span><span data-i18n="notif">Bildirishnomalar</span></div>
+      <span class="arrow">›</span>
+    </div>
+    <div class="profile-row">
+      <div class="left"><span class="icon">🎨</span><span data-i18n="theme">Mavzu</span></div>
+      <span class="arrow">›</span>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <h3 data-i18n="about">ℹ️ Ilova haqida</h3>
+    <div class="profile-row">
+      <div class="left"><span class="icon">📱</span><span data-i18n="version">Versiya</span></div>
+      <span style="color:var(--sub);font-size:13px">1.0.0</span>
+    </div>
+    <div class="profile-row">
+      <div class="left"><span class="icon">💬</span><span data-i18n="support">Qo'llab-quvvatlash</span></div>
+      <span class="arrow">›</span>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <button class="nav-item active" onclick="showPage('home')" id="nav-home">
+    <span class="icon">🏠</span>
+    <span data-i18n="nav_home">Bosh sahifa</span>
+  </button>
+  <button class="nav-item" onclick="showPage('coin')" id="nav-coin">
+    <span class="icon">🪙</span>
+    <span data-i18n="nav_coin">Tangalar</span>
+  </button>
+  <button class="nav-item" onclick="showPage('profile')" id="nav-profile">
+    <span class="icon">👤</span>
+    <span data-i18n="nav_profile">Profil</span>
+  </button>
+</div>
+
+<script>
+  // ===== LANGUAGES =====
+  const i18n = {
+    uz: {
+      hero_title: 'DramlarUz',
+      hero_sub: 'Eng yaxshi dramalar — siz uchun!',
+      popular: '🔥 Mashhur',
+      badge_new: 'YANGI',
+      d1_title: 'Sevgining Rangi',
+      d2_title: 'Qasr Sirlari',
+      d3_title: "To'lqinlar Osha",
+      d4_title: 'Tun Yulduzlari',
+      ep: '16 qism', ep2: '24 qism', ep3: '20 qism', ep4: '12 qism',
+      balance: 'Sizning tangalaringiz',
+      energy: '⚡ Energiya',
+      boosts: '🚀 Boosterlar',
+      boost1: 'x2 Tanga', boost2: "To'ldirish", boost3: 'x5 Super', boost4: 'Avto-tap',
+      user_name: 'Foydalanuvchi',
+      coins: 'tanga',
+      total_taps: 'Jami bosish',
+      watched: "Ko'rildi",
+      saved: 'Saqlandi',
+      settings: '⚙️ Sozlamalar',
+      language: 'Til',
+      notif: 'Bildirishnomalar',
+      theme: 'Mavzu',
+      about: 'ℹ️ Ilova haqida',
+      version: 'Versiya',
+      support: "Qo'llab-quvvatlash",
+      nav_home: 'Bosh sahifa',
+      nav_coin: 'Tangalar',
+      nav_profile: 'Profil',
+      lang_label: "O'zbek",
+      tap_label: '+1',
+      energy_empty: 'Energiya tugadi! To\'lishi uchun: ',
+      energy_refill: 'min',
+      boost_x2: '⚡ x2 Boost faollashdi! 30 soniya',
+      boost_refill: '🔋 Energiya to\'ldi!',
+      boost_x5: '💥 x5 Mega Boost! 15 soniya',
+      boost_auto: '🤖 Avto-tap faollashdi! 20 soniya',
+      boost_no_coins: '❌ Yetarli tanga yo\'q!',
+    },
+    ru: {
+      hero_title: 'DramlarUz',
+      hero_sub: 'Лучшие дорамы — для вас!',
+      popular: '🔥 Популярное',
+      badge_new: 'НОВЫЙ',
+      d1_title: 'Цвет Любви',
+      d2_title: 'Тайны Замка',
+      d3_title: 'За Волнами',
+      d4_title: 'Ночные Звёзды',
+      ep: '16 эп.', ep2: '24 эп.', ep3: '20 эп.', ep4: '12 эп.',
+      balance: 'Ваши монеты',
+      energy: '⚡ Энергия',
+      boosts: '🚀 Бустеры',
+      boost1: 'x2 Монеты', boost2: 'Зарядить', boost3: 'x5 Супер', boost4: 'Авто-тап',
+      user_name: 'Пользователь',
+      coins: 'монет',
+      total_taps: 'Всего нажатий',
+      watched: 'Просмотрено',
+      saved: 'Сохранено',
+      settings: '⚙️ Настройки',
+      language: 'Язык',
+      notif: 'Уведомления',
+      theme: 'Тема',
+      about: 'ℹ️ О приложении',
+      version: 'Версия',
+      support: 'Поддержка',
+      nav_home: 'Главная',
+      nav_coin: 'Монеты',
+      nav_profile: 'Профиль',
+      lang_label: 'Русский',
+      boost_x2: '⚡ Буст x2 активирован! 30 сек',
+      boost_refill: '🔋 Энергия восстановлена!',
+      boost_x5: '💥 Мега буст x5! 15 сек',
+      boost_auto: '🤖 Авто-тап активирован! 20 сек',
+      boost_no_coins: '❌ Недостаточно монет!',
+      energy_empty: 'Энергия на нуле! Зарядка через: ',
+      energy_refill: 'мин',
+    },
+    en: {
+      hero_title: 'DramlarUz',
+      hero_sub: 'The best dramas — for you!',
+      popular: '🔥 Popular',
+      badge_new: 'NEW',
+      d1_title: 'Color of Love',
+      d2_title: 'Castle Secrets',
+      d3_title: 'Beyond the Waves',
+      d4_title: 'Night Stars',
+      ep: '16 ep.', ep2: '24 ep.', ep3: '20 ep.', ep4: '12 ep.',
+      balance: 'Your Coins',
+      energy: '⚡ Energy',
+      boosts: '🚀 Boosters',
+      boost1: 'x2 Coins', boost2: 'Refill', boost3: 'x5 Super', boost4: 'Auto-tap',
+      user_name: 'User',
+      coins: 'coins',
+      total_taps: 'Total Taps',
+      watched: 'Watched',
+      saved: 'Saved',
+      settings: '⚙️ Settings',
+      language: 'Language',
+      notif: 'Notifications',
+      theme: 'Theme',
+      about: 'ℹ️ About',
+      version: 'Version',
+      support: 'Support',
+      nav_home: 'Home',
+      nav_coin: 'Coins',
+      nav_profile: 'Profile',
+      lang_label: 'English',
+      boost_x2: '⚡ x2 Boost activated! 30s',
+      boost_refill: '🔋 Energy refilled!',
+      boost_x5: '💥 x5 Mega Boost! 15s',
+      boost_auto: '🤖 Auto-tap activated! 20s',
+      boost_no_coins: '❌ Not enough coins!',
+      energy_empty: 'Out of energy! Refill in: ',
+      energy_refill: 'min',
+    }
+  };
+
+  let lang = 'uz';
+  let coins = 0;
+  let totalTaps = 0;
+  let energy = 500;
+  const MAX_ENERGY = 500;
+  let multiplier = 1;
+  let boostTimeout = null;
+  let autoInterval = null;
+  let refillInterval = null;
+  let refillCountdown = 0;
+
+  function setLang(l) {
+    lang = l;
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.textContent === l.toUpperCase());
+    });
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (i18n[l][key]) el.textContent = i18n[l][key];
+    });
+    const ll = document.getElementById('current-lang-label');
+    if (ll) ll.textContent = i18n[l].lang_label || l;
   }
 
-  // Update progress
-  updateProgress();
-
-  // Float score
-  showFloat();
-
-  // Profile score
-  document.getElementById('profileScore').textContent = totalClicks;
-  document.getElementById('profileTotalClicks').textContent = totalClicks;
-
-  // If empty, start timer
-  if (clicks <= 0) {
-    startRefillTimer();
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.getElementById('nav-' + name).classList.add('active');
+    if (name === 'profile') {
+      document.getElementById('profile-coins').textContent = coins;
+      document.getElementById('stat-taps').textContent = totalTaps;
+    }
   }
-}
 
-function renderRings() {
-  const wrap = document.getElementById('ringsWrap');
-  wrap.innerHTML = '';
-  for (let i = 0; i < 8; i++) {
-    const r = document.createElement('div');
-    r.className = 'ring' + (i < colors.length ? ' active' : '');
-    r.style.background = i < colors.length ? colors[i] : '#2a1a4a';
-    r.style.color = i < colors.length ? colors[i] : 'transparent';
-    if (i < colors.length) {
-      r.style.borderColor = colors[i];
+  function updateUI() {
+    document.getElementById('coin-count').textContent = coins;
+    const pct = (energy / MAX_ENERGY) * 100;
+    document.getElementById('energy-fill').style.width = pct + '%';
+    document.getElementById('energy-cur').textContent = energy;
+
+    const rt = document.getElementById('refill-text');
+    if (energy <= 0 && refillCountdown > 0) {
+      rt.innerHTML = (i18n[lang].energy_empty || 'Energy refills in: ') +
+        '<span>' + refillCountdown + ' ' + (i18n[lang].energy_refill || 'min') + '</span>';
     } else {
-      r.style.borderColor = '#2a1a4a';
-      r.style.boxShadow = 'none';
+      rt.textContent = '';
     }
-    wrap.appendChild(r);
   }
-}
 
-function updateProgress() {
-  const pct = (clicks / MAX_CLICKS) * 100;
-  document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('clicksLeft').textContent = clicks;
-}
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
 
-function showFloat() {
-  const el = document.getElementById('floatScore');
-  el.classList.remove('show');
-  void el.offsetWidth;
-  el.textContent = '+1 🌟';
-  el.classList.add('show');
-}
-
-function startRefillTimer() {
-  if (timerActive) return;
-  timerActive = true;
-  timerSeconds = REFILL_TIME;
-  document.getElementById('timerBar').style.display = 'block';
-  timerInterval = setInterval(() => {
-    timerSeconds--;
-    const m = Math.floor(timerSeconds / 60).toString().padStart(2,'0');
-    const s = (timerSeconds % 60).toString().padStart(2,'0');
-    document.getElementById('timerText').textContent = m + ':' + s;
-    if (timerSeconds <= 0) {
-      clearInterval(timerInterval);
-      timerActive = false;
-      clicks = MAX_CLICKS;
-      colors = [];
-      renderRings();
-      updateProgress();
-      document.getElementById('timerBar').style.display = 'none';
+  function tapCoin(e) {
+    if (energy <= 0) {
+      if (!refillInterval) startRefillCountdown();
+      return;
     }
-  }, 1000);
-}
+    energy = Math.max(0, energy - 1);
+    const earned = multiplier;
+    coins += earned;
+    totalTaps++;
+    updateUI();
 
-// ===== NAVIGATION =====
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page' + name).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('nav' + name).classList.add('active');
-}
+    // Floating text
+    const wrap = document.getElementById('coin-wrap');
+    const rect = wrap.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const el = document.createElement('div');
+    el.className = 'tap-float';
+    el.textContent = '+' + earned;
+    el.style.left = (x - 15) + 'px';
+    el.style.top = (y - 20) + 'px';
+    wrap.appendChild(el);
+    setTimeout(() => el.remove(), 800);
+  }
 
-// ===== INIT =====
-renderRings();
-applyTranslations();
+  function startRefillCountdown() {
+    refillCountdown = 10;
+    updateUI();
+    refillInterval = setInterval(() => {
+      refillCountdown--;
+      if (refillCountdown <= 0) {
+        clearInterval(refillInterval);
+        refillInterval = null;
+        energy = MAX_ENERGY;
+        updateUI();
+        showToast('🔋 ' + (lang === 'uz' ? 'Energiya to\'ldi!' : lang === 'ru' ? 'Энергия восстановлена!' : 'Energy refilled!'));
+      } else {
+        updateUI();
+      }
+    }, 60000); // 1 minute each tick
+    // For demo: use 3 seconds per tick
+    clearInterval(refillInterval);
+    refillInterval = setInterval(() => {
+      refillCountdown--;
+      if (refillCountdown <= 0) {
+        clearInterval(refillInterval);
+        refillInterval = null;
+        energy = MAX_ENERGY;
+        updateUI();
+      } else {
+        updateUI();
+      }
+    }, 6000); // 6s per tick = 60s total for demo
+  }
+
+  function activateBoost(type) {
+    const costs = { x2: 500, refill: 200, x5: 1500, auto: 1000 };
+    const cost = costs[type];
+    if (coins < cost) {
+      showToast(i18n[lang].boost_no_coins);
+      return;
+    }
+    coins -= cost;
+    updateUI();
+
+    if (type === 'x2') {
+      multiplier = 2;
+      showToast(i18n[lang].boost_x2);
+      clearTimeout(boostTimeout);
+      boostTimeout = setTimeout(() => { multiplier = 1; }, 30000);
+    } else if (type === 'refill') {
+      energy = MAX_ENERGY;
+      if (refillInterval) { clearInterval(refillInterval); refillInterval = null; }
+      showToast(i18n[lang].boost_refill);
+      updateUI();
+    } else if (type === 'x5') {
+      multiplier = 5;
+      showToast(i18n[lang].boost_x5);
+      clearTimeout(boostTimeout);
+      boostTimeout = setTimeout(() => { multiplier = 1; }, 15000);
+    } else if (type === 'auto') {
+      showToast(i18n[lang].boost_auto);
+      if (autoInterval) clearInterval(autoInterval);
+      autoInterval = setInterval(() => {
+        if (energy > 0) {
+          energy = Math.max(0, energy - 1);
+          coins += multiplier;
+          totalTaps++;
+          updateUI();
+        }
+      }, 300);
+      setTimeout(() => { clearInterval(autoInterval); autoInterval = null; }, 20000);
+    }
+  }
+
+  // Init
+  setLang('uz');
+  updateUI();
 </script>
 </body>
 </html>
